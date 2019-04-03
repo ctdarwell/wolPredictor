@@ -11,10 +11,10 @@ import re
 
 ###### SET SOME PARAMETERS!!!!! ######
 increment = 100 #how many divisions btwn upper & lower to split "species"
-upper = 4 #upper val - if upper == increment then spp delim range will cover upto 100% pw dists
+upper = 75 #upper val - if upper == increment then spp delim range will cover upto 100% pw dists
 lower = 0 #lower val - if lower == 0 then begin from 0% pw dists
-purge = 6 #upper % for examining purging
-pge_incr = 2 #purge increment - default = 1
+purge = 80 #upper % for examining purging
+pge_incr = 10 #purge increment - default = 1
 prefix = 'stndRun' + '_Rel_' #add a prefix to file names - do NOT use 'x'
 min_nSpp = 10 #min no. species from Kmeans
 max_nSpp = 35 #max no. species from Kmeans
