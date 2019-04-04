@@ -3,7 +3,7 @@ predict distribution of endosymbiotic bacteria among insects
 
 Methodological outline of wolPredictor.py 
 
-Outline of Problem
+Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods is randomly distributed. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. The program runs quite quickly but is not yet optimised to take advantage of ‘numpy’ vectorisation potential.
 
 Data requirements
