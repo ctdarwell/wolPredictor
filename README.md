@@ -1,6 +1,8 @@
 # wolPredictor
 predict distribution of endosymbiotic bacteria among insects
 
+CURRENTLY BEING EDITED
+
 Methodological outline of wolPredictor.py 
 
 Outline of Problem
