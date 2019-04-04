@@ -37,7 +37,7 @@ In order to create putative species groupings, the program reformats the pairwis
 
 	The program ‘outputInvestigator.py’ is a short script to investigate performance from the output files of the main program. 
 
-	run as: python outputInvestigator.py filename int1 int2
+	run as: `python outputInvestigator.py filename int1 int2
 
 	The first argument is the full name of the output file with the root name: correctedWolPreds; the 2nd and 3rd arguments are the minimum number of negative and positive Wolbachia strains that you require highlighting. The output will indicate which runs of the ‘wolPredictor’ program scored higher than the thresholds set here. There maybe a trade-off between negative and positive strain assignment by wolPredictor so it advisable to play with these two thresholds – starting low then increasing to highlight the best runs. From the output, individual columns of the output CSVs can be examined to see how predictions were made.
 
