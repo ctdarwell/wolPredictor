@@ -6,7 +6,7 @@ Methodological outline of wolPredictor.py
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods is randomly distributed. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. The program runs quite quickly but is not yet optimised to take advantage of ‘numpy’ vectorisation potential.
 
-Data requirements
+Data requirements:
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample, and host community name (here as host fig species).
 (ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you can comment out line 52 and use the ‘waspRaxml.tre_cophen.csv’ file for a test run (for your own analyses you would have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for details – ordered alphabetically according to sample).
 
