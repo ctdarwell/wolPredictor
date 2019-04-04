@@ -39,6 +39,6 @@ The first argument is the full name of the output file with the root name: corre
 
 7. Output results (makePDFv1.py & makePDFv2.py)
 
-run as: python makePDFvX.py filename[with “correctedWolPreds” root]
+run as: python makePDFvX.py filename[with “correctedWolPreds” root] 
 
 We use the Python package matplotlib to output a graphical representation of predictive accuracy performed at each iteration. This will include the strains assigned as ‘noWol’ indicating no Wolbachia infection. For our dataset, ‘noWol’ accounts for about 70% of the dataset. Thus, by uniformly predicting ‘noWol’ for all individuals it is possible to gain an impressively predictive score of 70%. To guard against this outcome, the program makePDFv2.py (alongside makePDFv1.py which assesses negative strains) only assesses predictive power for individuals with positive empirical Wolbachia associations. wolPredictor may over-estimate ‘noWol’ assessments under certain conditions. For example, if virtually all individuals from the dataset are assigned to the same putative species cluster (this may occur at certain threshold cut-offs) – under such a scenario Wolbachia would not be required as multiple species are not co-occurring within communities. The ‘min_nSpp’ parameter is useful for guarding against unrealistically low species diversity assessments. The programs make a graphical PDF output and write CSVs of all runs’ predictive outputs.
