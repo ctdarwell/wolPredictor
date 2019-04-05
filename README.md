@@ -8,7 +8,7 @@ It has been regularly suggested that highly prevalent Wolbachia induced reproduc
 
 Data requirements:
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample, and host community name (here labelled "community").
-(ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you can comment out line 52 and use the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses you would have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for details – ordered alphabetically according to sample).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you can comment out line 52 and use the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you would have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for details – ordered alphabetically according to sample).
 
 Functionality of wolPredictorXtra2_Kmeans_relaxed_numpy_mutliStrain.py
 1. Initial step (main function)
