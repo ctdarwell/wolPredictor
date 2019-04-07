@@ -146,7 +146,7 @@ def matchStrains(assigned, taxonDesignations, start):
     ISSUE: the 2nd block may not find a solution (e.g. thresh16_noPurge):
         -because it does not remove previously attempted suboptimal solutions (attempted if optimal soln doesn't solve)
         -i.e. 'replace_with' is retained and attempted again at the next iteration if the solution doesn't work
-        -currently fudged to give up at 20 attempts (basically a heuristic search)
+        -currently gives up at 20 attempts (basically a heuristic search)
     '''
     #identify best matches
     for column in range(2, assigned.shape[1]):
