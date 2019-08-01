@@ -25,7 +25,7 @@ comm_column = 'fig.species'
 NameOnPhylo = 'taxa' #exaNames raxNames
 tree = 'wasps20190624.exa.tre' # wasps20190624.exa.edit wasps20190624.rax.edit
 dat_dir, out_dir = '.', '.'
-path2script = 'cophen4pyOut.R'
+path2script = 'cophen4py.R'
 
 #read any new params
 if '-h' in sys.argv:
