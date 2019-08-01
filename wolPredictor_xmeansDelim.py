@@ -8,7 +8,7 @@ import pandas as pd
 from timeit import default_timer as timer 
 from pyclustering.cluster.xmeans import xmeans
 from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
-from wolFuncs import makePDF as mp
+import makePDF as mp
 
 ###### SET SOME PARAMETERS!!!!! ######
 prefix = 'wolPredictor' #add a prefix to file names - do NOT use a small 'x'
