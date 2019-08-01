@@ -21,7 +21,7 @@ gap = 10 #gap btwn ticks on figure x-axis
 
 filename = 'dataExaWasps20190624.csv' #waspsExaDat_20190624 waspsRaxDat_20190624
 wolbachia = 'hypo_wspClade' #hypo_wspClade
-comm_column = 'fig.species'
+comm_column = 'community'
 NameOnPhylo = 'taxa' #exaNames raxNames
 tree = 'wasps20190624.exa.tre' # wasps20190624.exa.edit wasps20190624.rax.edit
 dat_dir, out_dir = '.', '.'
