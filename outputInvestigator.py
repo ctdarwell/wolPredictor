@@ -16,7 +16,7 @@ dat2 = genfromtxt(filename, delimiter=',', dtype = 'U20', skip_header = 1)
 
 wsp = np.unique(dat2[:, 1])
 
-noWols, posStr, tot = 0, 65, 0  # = "noWols",  pos strains, total
+noWols, posStr, tot = sys.argv[3], sys.argv[4], sys.argv[5]  # = "noWols",  pos strains, total
 print('[ iteration //noWol//match//tot//%]')
 res = [] #TABLE: iteration, 'noWol' counts, matched strain counts
 for i in range(2, len(colmap)):
