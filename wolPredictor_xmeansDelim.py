@@ -15,15 +15,15 @@ prefix = 'wolPredictor' #add a prefix to file names - do NOT use a small 'x'
 min_nSpp = 6 #min no. species from Xmeans - must be >=2
 max_nSpp = 50 #max no. species from Xmeans
 nSpp_incr = 1 #nSpp increment
-increment = 100 #how many divisions btwn upper & lower to split "species"
+increment = 100 #how many divisions btwn upper & lower to split "species". LEAVE AS 100
 pdf = 1 #switch on pdf maker
 gap = 10 #gap btwn ticks on figure x-axis
 
-filename = 'dataExaWasps20190624.csv' #waspsExaDat_20190624 waspsRaxDat_20190624
-wolbachia = 'hypo_wspClade' #hypo_wspClade
-comm_column = 'community'
-NameOnPhylo = 'taxa' #exaNames raxNames
-tree = 'wasps20190624.exa.tre' # wasps20190624.exa.edit wasps20190624.rax.edit
+filename = 'testData.csv' #data file
+wolbachia = 'wspClade' #Wolbachia strain column
+comm_column = 'community' #host community column
+NameOnPhylo = 'NameOnPhylo' #taxon names column
+tree = 'testPhylo.tre' # tree file
 dat_dir, out_dir = '.', '.'
 path2script = 'cophen4py.R'
 
