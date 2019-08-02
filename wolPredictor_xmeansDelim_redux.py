@@ -13,19 +13,19 @@ from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
 import re
 
 ###### SET SOME PARAMETERS!!!!! ######
-increment = 100 #how many divisions btwn upper & lower to split "species"
+increment = 100 #how many divisions btwn upper & lower to split "species". LEAVE AS 100
 purge = 80 #upper % for examining purging
-pge_incr = 10 #purge increment - default = 1
+pge_incr = 10 #purge increment
 prefix = 'TEST' #add a prefix to file names - do NOT use 'x'
 min_nSpp = 6 #min no. species from Xmeans - must be >=2
 max_nSpp = 50 #max no. species from Xmeans
 nSpp_incr = 1 #nSpp increment
 
-wolbachia = 'wspClade' #hypo_wspClade
-comm_column = 'community'
-filename = 'testData.csv' #waspsExaDat_20190624 waspsRaxDat_20190624
-tree = 'testPhylo.tre' # wasps20190624.exa.edit wasps20190624.rax.edit
-NameOnPhylo = 'NameOnPhylo' #exaNames editTreeNames
+wolbachia = 'wspClade' #column name of empirical Wolbachia strain data
+comm_column = 'community' #column name of host community
+filename = 'testData.csv' #data file
+tree = 'testPhylo.tre' # tree file
+NameOnPhylo = 'NameOnPhylo' #column name of taxon names
 out_dir = '.'
 
 with open(filename) as f:
