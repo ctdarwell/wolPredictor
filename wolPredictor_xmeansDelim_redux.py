@@ -53,7 +53,7 @@ def main():
         return
     f = '{}-{}x{}_prg{}'.format(min_nSpp, max_nSpp, increment, purge) #STRING CONSTRUCTION!!!!!!!!!!!!!!!!
     print('Running "wolPredictor" - params:', prefix, f)
-    R_cophen(tree, path2script)
+    #R_cophen(tree, path2script)
     cophen = genfromtxt('{}_cophen.csv'.format(tree), dtype = 'float32', delimiter=',', skip_header = 1)
     x1, x2 = 0, 0 #calc array dims
     for _ in range(min_nSpp, max_nSpp, nSpp_incr): x1 += 1
