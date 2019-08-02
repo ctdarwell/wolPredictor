@@ -18,9 +18,13 @@ The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 `python wolPredictor_xmeansDelim.py -h`
 
 will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, three key considerations are:
+
 `-m` min_nSpp: The minimum number of putative species clusters that Xmeans will divide the phylogenetic data into [default = 1]
+
 `-M` max_nSpp: The maximum number of putative species clusters that Xmeans will divide the phylogenetic data into [default = 50] 
+
 `-i` nSpp_incr: The incremental increase between min_nSpp and max_nSpp. NB must be ≥2 [default = 2]
+
 -m & -M should be reasonable guestimates of minimum and maximum species richness from your tree. -i should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
 So, to run the program you might type:
 
