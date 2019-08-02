@@ -21,9 +21,9 @@ How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Pyth
 
 will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, three key considerations are:
 
-`-m` min_nSpp: The minimum number of putative species clusters that Xmeans will divide the phylogenetic data into [default = 1]
+`-m` min_nSpp: The minimum number of putative species clusters that X-means will divide the phylogenetic data into [default = 1]
 
-`-M` max_nSpp: The maximum number of putative species clusters that Xmeans will divide the phylogenetic data into [default = 50] 
+`-M` max_nSpp: The maximum number of putative species clusters that X-means will divide the phylogenetic data into [default = 50] 
 
 `-i` nSpp_incr: The incremental increase between min_nSpp and max_nSpp. NB must be ≥2 [default = 2]
 
