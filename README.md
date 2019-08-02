@@ -56,8 +56,8 @@ Explanation of functions
 	
 7. The program ‘outputInvestigator.py’ is a short script to investigate performance from the output files of the main program. 
 
-	run as: `python outputInvestigator.py filename arg2 arg3 arg4`
+	run as: `python outputInvestigator.py filename1 filename2 arg3 arg4 arg5`
 
-	The first argument is the full name of the output file with the root name "correctedWolPreds"; the 2nd, 3rd and 4th arguments are the minimum number of negative, positive and combined Wolbachia strains that you require highlighting. The output will indicate which runs of the ‘wolPredictor’ program scored higher than the thresholds set here. There maybe a trade-off between negative and positive strain assignment by wolPredictor so it advisable to play with these two thresholds – starting low then increasing, to highlight the best runs. From the output, individual columns of the output CSVs (whose column names will be outputted) can be examined to see how predictions were made.
+	The first and second arguments are the full name of the output files with the root name "correctedWolPreds" and "taxonDesignations"; the 3rd, 4th and 5th arguments are the minimum number of negative, positive and combined Wolbachia strains that you require highlighting. The output will indicate which runs of the ‘wolPredictor’ program scored higher than the thresholds set here. There maybe a trade-off between negative and positive strain assignment by wolPredictor so it advisable to play with these two thresholds – starting low then increasing, to highlight the best runs. From the output, individual columns of the output CSVs (whose column names will be outputted) can be examined to see how predictions were made.
 
 
