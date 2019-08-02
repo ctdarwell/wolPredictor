@@ -1,5 +1,5 @@
 # wolPredictor
-Predict distribution of endosymbiotic bacteria among insects
+#Predict distribution of endosymbiotic bacteria among insects
 
 Methodological outline of wolPredictor.py 
 
@@ -9,7 +9,9 @@ It has been regularly suggested that highly prevalent Wolbachia induced reproduc
 Providing all correct Python and R libraries are installed (see wolPredictor_xmeansDelim.py, makePDF.py & cophen4py.R), the program should run directly from the unzipped download bundle. The program runs quite quickly (a few minutes at the featured parameter settings) but has not yet been optimised for vectorisation or parallelisation.
 
 Data requirements:
+
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "community" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters).
+
 (ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you must use [NB VERSION to be added] with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 How to run “wolPredictor_xmeansDelim.py”
