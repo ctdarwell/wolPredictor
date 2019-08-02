@@ -15,9 +15,7 @@ Data requirements:
 (ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you must use [NB VERSION to be added] with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 
-How to run “wolPredictor_xmeansDelim.py”
-
-The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_xmeansDelim.py -h`
 
@@ -29,7 +27,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-i` nSpp_incr: The incremental increase between min_nSpp and max_nSpp. NB must be ≥2 [default = 2]
 
--m & -M should be reasonable guestimates of minimum and maximum species richness from your tree. -i should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
+`-m` & `-M` should be reasonable guestimates of minimum and maximum species richness from your tree. `-i` should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
 So, to run the program you might type:
 
 `python wolPredictor_xmeansDelim.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
