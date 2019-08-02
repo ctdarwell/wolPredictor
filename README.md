@@ -65,4 +65,4 @@ Explanation of functions
 
 8. Running `wolPredictor_xmeansDelim_redux.py` i.e. If R cannot be configured to interact with Python.
 
-	Variables must be set manually in the script text under the heading: "SET SOME PARAMETERS!!!!!".
+	Variables must be set manually in the script text under the heading: "SET SOME PARAMETERS!!!!!" at Line 15.
