@@ -12,7 +12,7 @@ Data requirements:
 
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "community" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters).
 
-(ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you must use [NB VERSION to be added] with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (cophen4py.R – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (instructions for this will the added in the near future) to interact with Python you must use `wolPredictor_xmeansDelim_redux.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 
 How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
@@ -63,3 +63,6 @@ Explanation of functions
 	The first and second arguments are the full name of the output files with the root name "correctedWolPreds" and "taxonDesignations"; the 3rd, 4th and 5th arguments are the minimum number of negative, positive and combined Wolbachia strains that you require highlighting. The output will indicate which runs of the ‘wolPredictor’ program scored higher than the thresholds set here. There maybe a trade-off between negative and positive strain assignment by wolPredictor so it advisable to play with these two thresholds – starting low then increasing, to highlight the best runs. From the output, individual columns of the output CSVs (whose column names will be outputted) can be examined to see how predictions were made.
 
 
+8. Running `wolPredictor_xmeansDelim_redux.py` i.e. If R cannot be configured to interact with Python.
+
+	Variables must be set manually in the script text under the heading: "SET SOME PARAMETERS!!!!!".
