@@ -54,7 +54,7 @@ Explanation of functions
 
 6. makePDF – output figures (.pdf & .png) of prediction accuracy
 
-	We use the Python package matplotlib to output a graphical representation of predictive accuracy performed at each iteration. The flag: `-g`: indicates the gap between ticks on figure x-axis [default = 10; use multiples of 10 e.g. 100, only]. The flag: `-q`: can be used to switch off makePDF with `-q 0` [default: `-q 1`].
+	We use the Python package matplotlib to output a graphical representation of predictive accuracy performed at each iteration. The flag: `-g`: indicates the gap between ticks on figure x-axis [default = 10]. The flag: `-q`: can be used to switch off makePDF with `-q 0` [default: `-q 1`].
 	
 7. The program ‘outputInvestigator.py’ is a short script to investigate performance from the output files of the main program. 
 
