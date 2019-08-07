@@ -25,7 +25,7 @@ comm_column = 'community' #host community column
 NameOnPhylo = 'NameOnPhylo' #taxon names column
 tree = 'testPhylo.tre' # tree file
 dat_dir, out_dir = '.', '.'
-path2script = 'cophen4py.R'
+path2script = 'cophen4pyOut.R'
 
 #read any new params
 if '-h' in sys.argv:
