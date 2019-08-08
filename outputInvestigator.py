@@ -13,8 +13,8 @@ with open(filename) as f:
 f = None
 
 dat2 = genfromtxt(filename, delimiter=',', dtype = 'U20', skip_header = 1) 
-
 wsp = np.unique(dat2[:, 1])
+#g=open('outFile.csv','w') #uncomment out (and lines 33 & 35) to write file
 
 noWols, posStr, tot = sys.argv[3], sys.argv[4], sys.argv[5]  # = "noWols",  pos strains, total
 print('[ iteration //noWol//match//tot//%]')
@@ -30,4 +30,6 @@ for i in range(2, len(colmap)):
         tax_deg = [string for string in list(taxDeg) if re.match(re.compile(colmap.get(i).split('_')[0] + '.'), string)]
         nSpp = tax_deg[0].split('_nSpp')[1]
         print([colmap.get(i), tmp[noWol], sum(tmp[:noWol]) + sum(tmp[noWol + 1:]), sum(tmp), float("{0:.2f}".format(100*sum(tmp)/np.shape(taxDeg)[0])), 'nSpecies = ', nSpp])
+        #g.write(str(colmap.get(i)) + ',' + str(tmp[noWol]) + ',' + str(sum(tmp[:noWol]) + sum(tmp[noWol + 1:])) + ',' + str(sum(tmp)) + '\n')
 
+#g.close()
