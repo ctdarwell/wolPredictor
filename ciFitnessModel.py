@@ -82,11 +82,3 @@ for q in qw:
 df = pd.DataFrame(tmp)
 df.columns=['% consp','CI favoured (%)']
 df.to_csv(f'{fldr}/summary.csv', index=False)
-
-#example at prop conspecifics = 90% with only slight diff in consp v het fitnesses
-cnt = 0
-for i in range(100):
-    x, y = fitnesses(.9, .45, .55)
-    if x > y: cnt += 1
-
-print(f"\nCI wins {cnt} out of 100 with hetfit 0.45 and confit 0.55") # around >65% of the time CI gives better fitness
