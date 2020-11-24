@@ -9,12 +9,8 @@ incrs = 100 #increments in fitness to assess (btwn 0-1)
 nreps = 10 #nReplicates to take mean result from
 start, jumps = 5, 5 #start value of consp proportions and increments to cycle thru
 
-def fitnesses(x, y, z):
-    propCons = x #prop of conspecifics in pop i.e. P(consp mating)
-    fitness = [y, z] #fitness due to phenotype - hetero vs consp mating
-    
+def fitnesses(propCons, fitness):
     remain = int(fec * propCons) #viable eggs remaining under CI acounting for heterospp matings
-
     w_ci = np.full((remain), fitness[1]) #under CI all remaining eggs get consp mating fitness
     wo_ci = np.random.choice(fitness, fec, p=[1 - propCons, propCons]) #wo CI randomly get consp or heterosp fitnesses according to proportions of consp v het matings
 
@@ -41,7 +37,7 @@ for prop in range(start, incrs, jumps): #cycle thru at diff %s of conspecifics i
         for confit in range(1, incrs + 1): #cycle thru 0-1 of consp offspring fitnesses
             tot1, tot2 = 0, 0
             for i in range(nreps): #replication
-                wCI, woCI = fitnesses(prop/incrs, hetfit/incrs, confit/incrs)
+                wCI, woCI = fitnesses(prop/incrs, [hetfit/incrs, confit/incrs])
                 tot1 += wCI
                 tot2 += woCI
             arr[hetfit - 1, confit - 1] = (tot1/nreps) - (tot2/nreps) #assign mean val for consp - hetsp inclusive fitness at incremental values
