@@ -27,7 +27,7 @@ def fitnesses(propCons, fitness):
     ovi_w_ci = np.random.choice(newOviLayers, remain, p=props)
     ovi_wo_ci = np.random.choice(oviLayers, fec, p=[1/len(oviLayers)]*len(oviLayers))
 
-    return np.sum(w_ci * ovi_w_ci), np.sum(wo_ci * ovi_wo_ci) #mutiply egg fitnesses from con v het matings X ovi site survuvorship fitnesses and take sum (inclusive/cumulative fitness for foundress)
+    return np.sum(w_ci * ovi_w_ci), np.sum(wo_ci * ovi_wo_ci) #mutiply egg fitnesses from con v het matings X ovi site survivorship fitnesses and take sum (inclusive/cumulative fitness for foundress)
 
 #Main
 vals = []
