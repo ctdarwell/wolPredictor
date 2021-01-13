@@ -4,7 +4,7 @@
 Methodological outline of wolPredictor.py 
 
 Outline of Problem:
-It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods is randomly distributed. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
+It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
 Providing all correct Python and R libraries are installed (see wolPredictor_xmeansDelim.py, makePDF.py & cophen4py.R), the program should run directly from the unzipped download bundle. The program runs quite quickly (a few minutes at the featured parameter settings) but has not yet been optimised for vectorisation or parallelisation.
 
@@ -19,7 +19,7 @@ How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Pyth
 
 `python wolPredictor_xmeansDelim.py -h`
 
-will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, three key considerations are:
+will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, key considerations are:
 
 `-m` min_nSpp: The minimum number of putative species clusters that X-means will divide the phylogenetic data into. NB must be ≥2 [default = 2].
 
@@ -28,6 +28,11 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 `-i` nSpp_incr: The incremental increase between min_nSpp and max_nSpp [default = 1].
 
 `-m` & `-M` should be reasonable guestimates of minimum and maximum species richness from your tree. `-i` should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
+
+`-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to give a null test
+
+`-C` setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
+
 So, to run the program you might type:
 
 `python wolPredictor_xmeansDelim.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
