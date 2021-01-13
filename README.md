@@ -68,7 +68,7 @@ Explanation of functions
 	The first and second arguments are the full name of the output files with the root name "correctedWolPreds" and "taxonDesignations"; the 3rd, 4th and 5th arguments are the minimum number of negative, positive and combined Wolbachia strains that you require highlighting. The output will indicate which runs of the ‘wolPredictor’ program scored higher than the thresholds set here. There maybe a trade-off between negative and positive strain assignment by wolPredictor so it advisable to play with these two thresholds – starting low then increasing, to highlight the best runs. From the output, individual columns of the output CSVs (whose column names will be outputted) can be examined to see how predictions were made.
 
 
-8. Running `wolPredictor_xmeansDelim_redux.py` i.e. If R cannot be configured to interact with Python.
+8. Running `wolPredictor_xmeansDelim_reduci.py` i.e. If R cannot be configured to interact with Python.
 
 	Variables must be set manually in the script text under the heading: "SET SOME PARAMETERS!!!!!" at Line 15. Here you must set the variables `purge` and `pge_incr`. To set purge you need the maximium cophenetic distance for your tree from R - `max(cophenetic(tree))`. If max distance is 0.17, enter "20" for `purge`. For `pge_incr` choose a sensible number of increments e.g. if `purge` is "20" set `pge_incr` as "2".
 	
