@@ -29,7 +29,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-m` & `-M` should be reasonable guestimates of minimum and maximum species richness from your tree. `-i` should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
 
-`-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to give a null test
+`-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
 
 `-C` setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
 
