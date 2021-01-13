@@ -72,7 +72,7 @@ Explanation of functions
 
 	Variables must be set manually in the script text under the heading: "SET SOME PARAMETERS!!!!!" at Line 15. Here you must set the variables `purge` and `pge_incr`. To set purge you need the maximium cophenetic distance for your tree from R - `max(cophenetic(tree))`. If max distance is 0.17, enter "20" for `purge`. For `pge_incr` choose a sensible number of increments e.g. if `purge` is "20" set `pge_incr` as "2".
 	
-	NB this program cannot randomly shuffle the Wolbachia strain data or perform the more conservative analysis
+	NB this program cannot randomly shuffle the Wolbachia strain data (`-s`) or perform the more conservative analysis (`-C`)
 
 9. The program ‘ciFitnessModel.py’ is a standalone program to evaluate relative fitness outcomes between diverging lineages where cytoplasmic incompatibility (CI) is or is not operating under the assumption that CI entails a reduction in fecundity.
 
