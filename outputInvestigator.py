@@ -26,7 +26,7 @@ for i in range(2, len(colmap)):
         qw2 = np.where(dat2[:, i] == w)
         tmp.append(len(np.intersect1d(qw, qw2)))
     noWol = np.where(wsp == 'noWol')[0][0]
-    if tmp[noWol] > noWols and sum(tmp[:noWol]) + sum(tmp[noWol + 1:]) > posStr and tmp[noWol] + sum(tmp[:noWol]) + sum(tmp[noWol + 1:]) > tot:
+    if tmp[noWol] >= noWols and sum(tmp[:noWol]) + sum(tmp[noWol + 1:]) > posStr and tmp[noWol] + sum(tmp[:noWol]) + sum(tmp[noWol + 1:]) > tot:
         tax_deg = [string for string in list(taxDeg) if re.match(re.compile(colmap.get(i).split('_')[0] + '.'), string)]
         nSpp = tax_deg[0].split('_nSpp')[1]
         print([colmap.get(i), tmp[noWol], sum(tmp[:noWol]) + sum(tmp[noWol + 1:]), sum(tmp), float("{0:.2f}".format(100*sum(tmp)/np.shape(taxDeg)[0])), 'nSpecies = ', nSpp])
