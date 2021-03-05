@@ -16,7 +16,7 @@ dat2 = genfromtxt(filename, delimiter=',', dtype = 'U20', skip_header = 1)
 wsp = np.unique(dat2[:, 1])
 #g=open('outFile.csv','w') #uncomment out (and lines 33 & 35) to write file
 
-noWols, posStr, tot = sys.argv[3], sys.argv[4], sys.argv[5]  # RECOMMENDED set noWols = -1, pos strains = <positive value>, total = <positive value>
+noWols, posStr, tot = int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5])  # RECOMMENDED set noWols = 0, pos strains = <positive value>, total = <positive value>
 print('[ iteration //noWol//match//tot//%]')
 res = [] #TABLE: iteration, 'noWol' counts, matched strain counts
 for i in range(2, len(colmap)):
