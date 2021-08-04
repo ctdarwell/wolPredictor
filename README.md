@@ -16,18 +16,18 @@ numpy - numpy.org
 
 pandas - pandas.pydata.org
 
-pyclustering - https://pyclustering.github.io/docs/0.8.2/html/index.html
+pyclustering - https://pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
 
 matplotlib - matplotlib.org
 
-(ii) R reuires the 'ape' library installing - `install.packages(ape)`
+(ii) R reuires the "ape" library installing - `install.packages(ape)`
 
 
 Data requirements:
 
-(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "community" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters).
+(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "sp.complex" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
-(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4py.R` – using the ‘ape’ library) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. _C:\Program Files\R\R-3.6.2\bin_ on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4py.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. _C:\Program Files\R\R-3.6.2\bin_ on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 
 How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
