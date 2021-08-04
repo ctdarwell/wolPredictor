@@ -1,12 +1,12 @@
 # wolPredictor
-"Predict distribution of endosymbiotic bacteria among insects"
+**Predict distribution of endosymbiotic bacteria among insects**
 
 Methodological outline of wolPredictor.py 
 
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
-Providing all correct Python and R libraries are installed (see wolPredictor_xmeansDelim.py, makePDF.py & cophen4py.R), the program should run directly from the unzipped download bundle. The program runs quite quickly (a few minutes at the featured parameter settings) but has not yet been optimised for vectorisation or parallelisation.
+Providing all correct Python and R libraries are installed (see *wolPredictor_xmeansDelim.py*, *makePDF.py* & *cophen4py.R*), the program should run directly from the unzipped download bundle. The program runs quite quickly (a few minutes at the featured parameter settings) but has not yet been optimised for vectorisation or parallelisation.
 
 Python and R libraries:
 
@@ -20,7 +20,7 @@ pyclustering - https://pyclustering.github.io/docs/0.8.2/html/index.html (NB for
 
 matplotlib - matplotlib.org
 
-(ii) R reuires the "ape" library installing - `install.packages(ape)`
+(ii) R reuires the *ape* library installing - `install.packages(ape)`
 
 
 Data requirements:
@@ -30,7 +30,55 @@ Data requirements:
 (ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4py.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. _C:\Program Files\R\R-3.6.2\bin_ on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 
-How to run “wolPredictor_xmeansDelim.py”: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+**Initial consideration**
+
+*wolPredictor* basically comes in two flavours according to method employed to delineate species richness clusters:
+
+(i) *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. So, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
+
+(ii) *wolPredictor_xmeansDelim.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
+
+**NB** We recommend using *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially.
+
+**_wolPredictor_ flavour #1:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: *ecoCladeGenerator.py* can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+
+`python ecoCladeGenerator.py`
+
+The following flags can be added to alter the default setting variables:
+
+`-s` swch [default: 1]: This determines whether disjunct populations can be considered when deciding species cluster designations. The option are [0 - allow disjunct combinations] and [1 - don't allow]. This obviously only makes sense if the ecological variable being considered has some kind of linear relationship (for our data, it makes sense not to allow species clusters of low and high altitude populations).
+
+`-e` ecoVar [default: "elevation"]: The column name of the ecological variable being examined. Variables can be added as any type e.g., categorical or numerical as long as they form discrete categories (e.g. our elevation variables consist of category values such as 200, 700, 1200 etc that repesent mean population altitude rather than the exact elevation of each sample)
+
+`-c` community [default: "community"]: The column name of host communities. For our example it is host fig species.
+
+`-d` filename [default: "newTable_STS_manual_FinalVersion.csv"]: CSV file of data
+
+`-p` prfx [default: "eco"]: Prefix of outputted file.
+
+Example: `python ecoCladeGenerator.py -c species` - runs the program for a data file where community has the column heading "species"
+
+
+How to run *wolPredictor_MANUAL.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+
+`python wolPredictor_MANUAL.py -h`
+
+will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, key considerations are:
+
+`-p` prefix: Prefix of outputted file [default: "manual"].
+
+`-q` pdf: Make figure (Off/On: 0/1). More suited to *wolPredictor_xmeansDelim.py* but can be run for general overview of results [default: 0].
+
+`-g` gap: Gap between ticks on figure x-axis  [default: 10].
+
+`-s` shuffle: Shuffle wsp clades (Off/On: 0/1) [default: '0'].
+
+`-C` cntrl: Control strains in multiple communities (Off/On: 0/1) [default: '0']. Setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
+
+`-N` nPges: No. of purges at each species delim iteration (max=10) [default: '4']. This actually gives a non-precise outcome as it is used to calculate an integer from a division sum. The default should give a nice spread of purging thresholds (either 25%, 50%, 75% and 100% OR 20%, 40%, 60%, 80% and 100% of phylogenetic tree maximum pairwise branch length) - setting to 10 would give a more fine-scaled evaluation but is unlikely to be wothwhile and will just increase runtime.
+
+
+**_wolPredictor_ flavour #2:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_xmeansDelim.py -h`
 
