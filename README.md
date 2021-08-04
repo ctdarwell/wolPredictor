@@ -104,10 +104,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 See also above options with *wolPredictor_MANUAL.py*
 
-Description of function *calcX* in *wolPredictor_xmeansDelim.py*
-
-X-means species delimitation:
-
+Description of function *calcX* in *wolPredictor_xmeansDelim.py* via X-means species delimitation: 
 In order to create putative species groupings, the program uses the pairwise co-phenetic distance matrix and X-means clustering to delimit species groupings. At each loop iteration, `wolPredictor` will calculate clusters of species for each value of species richness (i.e. between `-m` & `-M`). It should be emphasised that X-means will not always arrive at the same groupings for a specific level of species richness. Thus, you may want to run `wolPredictor` several times to assess optimum performance. NB optimum performance should occur whenever species clustering best reflects your empirical data’s Wolbachia distribution, so it is worth running the program a few times.
 
 So, to run the program you might type:
