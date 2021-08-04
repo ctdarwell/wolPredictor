@@ -75,7 +75,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-g` gap: Gap between ticks on figure x-axis  [default: 10].
 
-MAYBE REMOVE!! `-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
+**MAYBE REMOVE!!** `-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
 
 `-C` cntrl: Control strains in multiple communities (Off/On: 0/1) [default: '0']. Setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
 
