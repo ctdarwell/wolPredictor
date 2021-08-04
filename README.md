@@ -8,7 +8,7 @@ It has been regularly suggested that highly prevalent Wolbachia induced reproduc
 
 Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeansDelim.py* runs very quickly).
 
-Python and R libraries:
+PYTHON AND R LIBRARIES
 
 (i) The following library dependencies are required for the Python scripts to run:
 
@@ -23,7 +23,7 @@ Python and R libraries:
 (ii) R requires the *ape* library installing - `install.packages(ape)`
 
 
-Data requirements:
+DATA REQUIREMENTS:
 
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
@@ -40,7 +40,7 @@ OPTION #2: *wolPredictor_xmeansDelim.py* divides samples into species clusters a
 
 **NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
-**_wolPredictor_ flavour #1:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
+**OPTION #1_wolPredictor_:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
 
 *ecoCladeGenerator.py* can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
@@ -90,7 +90,7 @@ You can also run the program from a Python IDE and alter the above parameters in
 After running the program you should use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
 
 
-**_wolPredictor_ flavour #2:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+**OPTION #2 _wolPredictor_:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_xmeansDelim.py -h`
 
