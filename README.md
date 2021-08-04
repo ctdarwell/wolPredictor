@@ -40,7 +40,7 @@ OPTION #2: *wolPredictor_xmeansDelim.py* divides samples into species clusters a
 
 **NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
-**OPTION #1_wolPredictor_:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
+**OPTION #1 *wolPredictor*:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
 
 *ecoCladeGenerator.py* can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
@@ -90,7 +90,7 @@ You can also run the program from a Python IDE and alter the above parameters in
 After running the program you should use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
 
 
-**OPTION #2 _wolPredictor_:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+**OPTION #2 *wolPredictor*:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_xmeansDelim.py -h`
 
