@@ -8,6 +8,18 @@ It has been regularly suggested that highly prevalent Wolbachia induced reproduc
 
 Providing all correct Python and R libraries are installed (see wolPredictor_xmeansDelim.py, makePDF.py & cophen4py.R), the program should run directly from the unzipped download bundle. The program runs quite quickly (a few minutes at the featured parameter settings) but has not yet been optimised for vectorisation or parallelisation.
 
+Python and R libraries:
+
+(i) The following library dependencies are required for the Python scripts to run:
+
+numpy - numpy.org
+pandas - pandas.pydata.org
+pyclustering - https://pyclustering.github.io/docs/0.8.2/html/index.html
+matplotlib - matplotlib.org
+
+(ii) R reuires the 'ape' library installing - `install.packages(ape)`
+
+
 Data requirements:
 
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "community" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters).
