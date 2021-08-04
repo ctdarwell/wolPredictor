@@ -87,6 +87,8 @@ So, to run the program you might type:
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
+After running the program you should use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
+
 
 **_wolPredictor_ flavour #2:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
@@ -112,6 +114,9 @@ So, to run the program you might type:
 `python wolPredictor_xmeansDelim.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
+
+Also use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
+
 
 Explanation of *wolPredictor* functions common to *wolPredictor_xmeansDelim.py* and *wolPredictor_MANUAL.py*
 
