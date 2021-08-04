@@ -16,7 +16,7 @@ Python and R libraries:
 
 *pandas* - pandas.pydata.org
 
-*pyclustering* - https://pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
+*pyclustering* - pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
 
 *matplotlib* - matplotlib.org
 
@@ -25,7 +25,7 @@ Python and R libraries:
 
 Data requirements:
 
-(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "sp.complex" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
+(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
 (ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4py.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
@@ -38,9 +38,11 @@ Data requirements:
 
 (ii) *wolPredictor_xmeansDelim.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
 
-**NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially.
+**NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
-**_wolPredictor_ flavour #1:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: *ecoCladeGenerator.py* can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+**_wolPredictor_ flavour #1:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
+
+*ecoCladeGenerator.py* can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python ecoCladeGenerator.py`
 
@@ -50,7 +52,7 @@ The following flags can be added to alter the default setting variables:
 
 `-e` ecoVar [default: "elevation"]: The column name of the ecological variable being examined. Variables can be added as any type e.g., categorical or numerical as long as they form discrete categories (e.g. our elevation variables consist of category values such as 200, 700, 1200 etc that repesent mean population altitude rather than the exact elevation of each sample)
 
-`-c` community [default: "community"]: The column name of host communities. For our example it is host fig species.
+`-c` community [default: "community"]: The column name of host communities. For our example we are considering host fig species.
 
 `-d` filename [default: "newTable_STS_manual_FinalVersion.csv"]: CSV file of data
 
@@ -67,19 +69,21 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-p` prefix: Prefix of outputted file [default: "manual"].
 
+`-m` filename: Main input filename [defaults: "newTable_STS_manual_FinalVersion_arbDegs.csv"]
+
 `-q` pdf: Make figure (Off/On: 0/1). More suited to *wolPredictor_xmeansDelim.py* but can be run for general overview of results [default: 0].
 
 `-g` gap: Gap between ticks on figure x-axis  [default: 10].
 
-`-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
+MAYBE REMOVE!! `-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
 
 `-C` cntrl: Control strains in multiple communities (Off/On: 0/1) [default: '0']. Setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
 
-`-N` nPges: No. of purges at each species delim iteration (max=10) [default: '4']. This actually gives a non-precise outcome as it is used to calculate an integer from a division sum. The default should give a nice spread of purging thresholds (either 25%, 50%, 75% and 100% OR 20%, 40%, 60%, 80% and 100% of phylogenetic tree maximum pairwise branch length) - setting to 10 would give a more fine-scaled evaluation but is unlikely to be wothwhile and will just increase runtime.
+`-N` nPges: No. of purges at each species delim iteration (max=10) [default: '4']. This actually gives a non-precise outcome as it is used to calculate an integer from a division sum. The default should give a nice spread of purging thresholds (either 25%, 50%, 75% and 100% OR 20%, 40%, 60%, 80% and 100% of phylogenetic tree maximum pairwise branch length) - setting to 10 would give a more fine-scaled evaluation but is unlikely to be informative relative to the default and will just increase runtime.
 
 So, to run the program you might type:
 
-`python wolPredictor_MANUAL.py -d data_directory -o out_directory -p EcoVariables -N 10`
+`python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
