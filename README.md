@@ -6,7 +6,7 @@ Methodological outline of wolPredictor.py
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
-Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (*wolPredictor_xmeansDelim.py* runs very quickly).
+Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeansDelim.py* runs very quickly).
 
 Python and R libraries:
 
