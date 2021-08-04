@@ -99,28 +99,31 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 `-m` & `-M` should be reasonable guestimates of minimum and maximum species richness from your tree. `-i` should be a reasonable increment between the two values (so that the runtime is not overlong: progress print-outs are outputted so you can judge if a run will take too long – change `-i` if necessary).
 
 See also above options with *wolPredictor_MANUAL.py*
-`
+
+Description of function *calcX* in *wolPredictor_xmeansDelim.py*
+X-means species delimitation:
+
+	In order to create putative species groupings, the program uses the pairwise co-phenetic distance matrix and X-means clustering to delimit species groupings. At each loop iteration, `wolPredictor` will calculate clusters of species for each value of species richness (i.e. between `-m` & `-M`). It should be emphasised that X-means will not always arrive at the same groupings for a specific level of species richness. Thus, you may want to run `wolPredictor` several times to assess optimum performance. NB optimum performance should occur whenever species clustering best reflects your empirical data’s Wolbachia distribution, so it is worth running the program a few times.
+
 So, to run the program you might type:
 
 `python wolPredictor_xmeansDelim.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
-Explanation of functions
+Explanation of *wolPredictor* functions common to *wolPredictor_xmeansDelim.py* and *wolPredictor_MANUAL.py*
+
 1. R_cophen: call R (‘ape’ library) to create cophenetic distance matrix
-2. calcX: X-means species delimitation:
 
-	In order to create putative species groupings, the program uses the pairwise co-phenetic distance matrix and X-means clustering to delimit species groupings. At each loop iteration, `wolPredictor` will calculate clusters of species for each value of species richness (i.e. between `-m` & `-M`). It should be emphasised that X-means will not always arrive at the same groupings for a specific level of species richness. Thus, you may want to run `wolPredictor` several times to assess optimum performance. NB optimum performance should occur whenever species clustering best reflects your empirical data’s Wolbachia distribution, so it is worth running the program a few times.
-
-3. Predict Wolbachia strain associations (function: addPredict)
+2. Predict Wolbachia strain associations (function: addPredict)
 
 	The program then assigns Wolbachia infection statuses. Under our working hypothesis, we expect that closely related, or contemporarily diverging, species in close ecological contact will host different Wolbachia strains that mediate reproductive isolation. Thus, `wolPredictor` assigns arbitrarily named strains to putative species groupings that co-occur in the same community. For example, if community #1 (labelled 'co1' in our data) has been allocated three putative species groupings, the program will assign the strain names ‘co1_w1’, ‘co1_w2’ and ‘co1_w3’ to all individuals in the three putative clusters. However, if community #2 (i.e. 'co2') has only been allocated a single putative species grouping its wasps will be assigned the strain name ‘noWol’ (i.e. no Wolbachia) as there is no additional putative species in the community from which Wolbachia should mediate reproductive isolation. If community #3 (i.e. 'co3') is allocated two putative species, the strain names 'co3_w1' and 'co3_w2' will be assigned. 
 
-4. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger)
+3. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger)
 
 	As Wolbachia has been shown to typically drop-out from host lineages after approx. 7 million years, our working hypothesis includes the possibility that species clusters separated by sufficient evolutionary time will have undergone Wolbachia purging. `wolPredictor` uses the co-phenetic distance matrix to incrementally remove Wolbachia according to cut-off thresholds between putative species clusters within a community. Species clusters that are separated by a distance greater that the incremental threshold will have their assigned Wolbachia strain converted to ‘noWol’. This is done conservatively, if there are three species within a community and the evolutionary distances between two of them are greater than the threshold, Wolbachia will not be purged if their evolutionary distances from the third species are below the threshold. Calculations are made for all threshold purging cut-offs (using the parameter ‘purge’, which sets the maximum purging distance iterated to from zero, at intervals set by ‘pge_incr’). At this point, all Wolbachia strain predictions at every species delimitation iteration are written to a CSV file with a root name ‘wolPreds’; this includes calculations for species delimitation iterations without any purging having been performed.
 
-5. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
+4. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
 
 	In order to calculate the accuracy of our model at each iteration, we need to match arbitrarily assigned Wolbachia strain names to the empirically derived strain names, as much as is possible. Again, this is done conservatively, if a community features two putative species delimitation clusters whose individuals all match up to a single Wolbachia strain, only one species will have their arbitrarily assigned Wolbachia strain names converted to match the empirical predictions. For example, if community #1 has two species clusters (e.g. ‘co1_w1’ and ‘co1_w2’) whose individuals have been shown to have the empirical strain ‘wspC6’ (see our data), then only the species cluster with the most matching individuals will be reassigned to the strain name ‘wspC6’. The second putative species will retain the arbitrarily assigned strain name (i.e. ‘co1_w1’ or ‘co1_w2’) and will therefore not contribute to the subsequent assessment of prediction accuracy. This is important, if this pattern of single Wolbachia strains across multiple species within a community was found in empirical data, it would suggest our model did not accurately represent natural patterns. Thus, our accuracy assessment is conservative and means that only empirical datasets that reflect our theoretical propositions will return high accuracy assessments. Thus alternatively, if the two species clusters’ (‘co1_w1’ and ‘co1_w2’) individuals were shown to have two distinct empirical strains (e.g. ‘wspC5’ and ‘wspC6’), both would contribute to higher accuracy assessments (both receiving reassigned strain names) and corroborate our model. NB if a species cluster in a separate community should also have the same strain (e.g. ‘wspC6’), WOLPREDICTOR will allow it to be named as such (as can be seen to occur in natural populations and is not in violation of our predictions).
 
