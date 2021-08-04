@@ -20,7 +20,7 @@ Python and R libraries:
 
 *matplotlib* - matplotlib.org
 
-(ii) R reuires the *ape* library installing - `install.packages(ape)`
+(ii) R requires the *ape* library installing - `install.packages(ape)`
 
 
 Data requirements:
