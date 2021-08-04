@@ -12,13 +12,13 @@ Python and R libraries:
 
 (i) The following library dependencies are required for the Python scripts to run:
 
-numpy - numpy.org
+*numpy* - numpy.org
 
-pandas - pandas.pydata.org
+*pandas* - pandas.pydata.org
 
-pyclustering - https://pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
+*pyclustering* - https://pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
 
-matplotlib - matplotlib.org
+*matplotlib* - matplotlib.org
 
 (ii) R reuires the *ape* library installing - `install.packages(ape)`
 
