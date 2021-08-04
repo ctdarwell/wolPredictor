@@ -146,7 +146,7 @@ The program *tabber.py* will generate a results table at each considered species
 
 It can be run as: `python tabber.py filename1 filename2 filename3 arg4`
 
-These are: [1] - the "correctedWolPreds" file outputted by *wolPredictor*; [2] - the :taxonDesignations" file outputted by *wolPredictor*; [3] - the file outputted by *taxdegMatcher.py*; [4] - a prefix for the outputted file name
+These are: [1] - the "correctedWolPreds" file outputted by *wolPredictor*; [2] - the "taxonDesignations" file outputted by *wolPredictor*; [3] - the file outputted by *taxdegMatcher.py*; [4] - a prefix for the outputted file name
 
 Outputted columns are [1] 'match' - species delimitation accuracy at this species clustering iteration; [2] 'incr' - the best 'noWol' (i.e. uninfected with Wolbachia) prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration; [3] 'incr_wo_loss' - the best 'noWol' prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration without compromising positive strain prediction abilities; [4] 'tot' - the best combined  prediction score of positive strain prediction + 'noWol' prediction including the effcet of *wolPurger*; [5] 'noPge_noWol' - the 'noWol' prediction accuracy without the action of the *wolPurger* function at each species clustering iteration; [6] 'noPge_posWol' - the  Wolbachia strain prediction without the action of the *wolPurger* function at each species clustering iteration; [7] - 'match_nSpp' species richness at each species clustering iteration.
 
