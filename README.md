@@ -8,7 +8,7 @@ It has been regularly suggested that highly prevalent Wolbachia induced reproduc
 
 Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeansDelim.py* runs very quickly).
 
-PYTHON AND R LIBRARIES
+PYTHON AND R LIBRARIES:
 
 (i) The following library dependencies are required for the Python scripts to run:
 
