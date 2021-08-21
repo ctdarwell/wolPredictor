@@ -27,7 +27,7 @@ DATA REQUIREMENTS:
 
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
-(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4py.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4py.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4pyOut.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘testPhylo.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4pyOut.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), quote = F, row.names = F) `).
 
 
 **Initial consideration**
@@ -36,7 +36,7 @@ DATA REQUIREMENTS:
 
 OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. So, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
-Workflow1: 1. *ecoCladeGenerator.v1.py*; 2. *wolPredictor_MANUAL.v1.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
+Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
 OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
 
