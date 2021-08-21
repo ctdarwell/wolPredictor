@@ -127,7 +127,7 @@ Explanation of *wolPredictor* functions common to *wolPredictor_xmeans.py* and *
 
 1. R_cophen: call R (‘ape’ library) to create cophenetic distance matrix
 
-2. Uses X-means clustering to divide the branch length pair-wise distance matrix into *n* clusters
+2. Uses X-means clustering to divide the branch length pair-wise distance matrix into *n* clusters (*wolPredictor_xmeans.py* only)
 
 3. Predict Wolbachia strain associations (function: addPredict). This relates to the **contact contingency hypothesis** in the paper.
 
@@ -162,7 +162,7 @@ It can be run as: `python wolTabber.py filename1 filename2 filename3 arg4`
 
 These are: [1] - the "correctedWolPreds" file outputted by *wolPredictor*; [2] - the "taxonDesignations" file outputted by *wolPredictor*; [3] - the file outputted by *taxdegMatcher.py*; [4] - a prefix for the outputted file name
 
-Outputted columns are [1] 'match' - species delimitation accuracy at this species clustering iteration; [2] 'incr' - the best 'noWol' (i.e. uninfected with Wolbachia) prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration; [3] 'incr_wo_loss' - the best 'noWol' prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration without compromising positive strain prediction abilities; [4] 'tot' - the best combined  prediction score of positive strain prediction + 'noWol' prediction including the effcet of *wolPurger*; [5] 'noPge_noWol' - the 'noWol' prediction accuracy without the action of the *wolPurger* function at each species clustering iteration; [6] 'noPge_posWol' - the  Wolbachia strain prediction without the action of the *wolPurger* function at each species clustering iteration; [7] - 'match_nSpp' species richness at each species clustering iteration.
+Outputted columns are [1] 'match' - species delimitation accuracy at this species clustering iteration; [2] 'pgeIncr' - the best 'noWol' (i.e. uninfected with Wolbachia) prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration; [3] 'pgeIncr_wo_loss' - the best 'noWol' prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration without compromising positive strain prediction abilities; [4] 'maxScore' - the best combined  prediction score of positive strain prediction + 'noWol' prediction including the effcet of *wolPurger*; [5] 'noPge_noWol' - the 'noWol' prediction accuracy without the action of the *wolPurger* function at each species clustering iteration; [6] 'noPge_posWol' - the  Wolbachia strain prediction without the action of the *wolPurger* function at each species clustering iteration; [7] - 'match_nSpp' species richness at each species clustering iteration.
 
 
 
