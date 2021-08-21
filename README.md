@@ -58,7 +58,7 @@ The following flags can be added to alter the default setting variables:
 
 `-c` community [default: "community"]: The column name of host communities. For our example we are considering host fig species.
 
-`-d` filename [default: "newTable_STS_manual_FinalVersion.csv"]: CSV file of data
+`-d` filename [default: "exaData_faoReview.csv"]: CSV file of data
 
 `-p` prfx [default: "eco"]: Prefix of outputted file.
 
@@ -73,7 +73,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-p` prefix: Prefix of outputted file [default: "manual"].
 
-`-m` filename: Main input filename [defaults: "newTable_STS_manual_FinalVersion_arbDegs.csv"]
+`-m` filename: Main input filename [defaults: "exaData_faoReview.csv"]
 
 `-q` pdf: Make figure (Off/On: 0/1). More suited to *wolPredictor_xmeans.py* but can be run for general overview of results [default: 0].
 
