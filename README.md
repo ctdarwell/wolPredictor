@@ -88,7 +88,7 @@ So, to run the program you might type:
 `python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
 
-**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations. This will take around 80 minutes to run. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
+**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations. This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
