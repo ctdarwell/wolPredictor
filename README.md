@@ -27,7 +27,7 @@ DATA REQUIREMENTS:
 
 (i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
-(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4pyOut.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘exaData_faoReview.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4pyOut.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), file='yourFile.csv', quote = F, row.names = F) `).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4pyOut.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘exaData_faoReview.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4pyOut.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), file='yourFile.csv', quote = F, row.names = F)` ).
 
 
 **Initial consideration**
@@ -92,7 +92,7 @@ So, to run the program you might type:
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
-After running the program you should use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
+After running the program you should use *taxdegMatcher.py* and *wolTabber.py* for analysis and evaluation of results.
 
 
 **OPTION #2 *wolPredictor*:** How to run *wolPredictor_xmeans.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
@@ -120,26 +120,28 @@ So, to run the program you might type:
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
-Also use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
+Also use *taxdegMatcher.py* and *wolTabber.py* for analysis and evaluation of results.
 
 
 Explanation of *wolPredictor* functions common to *wolPredictor_xmeans.py* and *wolPredictor_MANUAL.py*
 
 1. R_cophen: call R (‘ape’ library) to create cophenetic distance matrix
 
-2. Predict Wolbachia strain associations (function: addPredict). This relates to the **contact contingency hypothesis** in the paper.
+2. Uses X-means clustering to divide the branch length pair-wise distance matrix into *n* clusters
+
+3. Predict Wolbachia strain associations (function: addPredict). This relates to the **contact contingency hypothesis** in the paper.
 
 	The program then assigns Wolbachia infection statuses. Under our working hypothesis, we expect that closely related, or contemporarily diverging, species in close ecological contact will host different Wolbachia strains that mediate reproductive isolation. Thus, `wolPredictor` assigns arbitrarily named strains to putative species groupings that co-occur in the same community. For example, if community #1 (labelled 'co1' in our data) has been allocated three putative species groupings, the program will assign the strain names ‘co1_w1’, ‘co1_w2’ and ‘co1_w3’ to all individuals in the three putative clusters. However, if community #2 (i.e. 'co2') has only been allocated a single putative species grouping its wasps will be assigned the strain name ‘noWol’ (i.e. no Wolbachia) as there is no additional putative species in the community from which Wolbachia should mediate reproductive isolation. If community #3 (i.e. 'co3') is allocated two putative species, the strain names 'co3_w1' and 'co3_w2' will be assigned. 
 
-3. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger). This relates to the **adaptive decay hypothesis** in the paper.
+4. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger). This relates to the **adaptive decay hypothesis** in the paper.
 
 	As Wolbachia has been shown to typically drop-out from host lineages after approx. 7 million years, our working hypothesis includes the possibility that species clusters separated by sufficient evolutionary time will have undergone Wolbachia purging. `wolPredictor` uses the co-phenetic distance matrix to incrementally remove Wolbachia according to cut-off thresholds between putative species clusters within a community. Species clusters that are separated by a distance greater that the incremental threshold will have their assigned Wolbachia strain converted to ‘noWol’. This is done conservatively, if there are three species within a community and the evolutionary distances between two of them are greater than the threshold, Wolbachia will not be purged if their evolutionary distances from the third species are below the threshold. Calculations are made for all threshold purging cut-offs (using the parameter ‘purge’, which sets the maximum purging distance iterated to from zero, at intervals set by ‘pge_incr’). At this point, all Wolbachia strain predictions at every species delimitation iteration are written to a CSV file with a root name ‘wolPreds’; this includes calculations for species delimitation iterations without any purging having been performed.
 
-4. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
+5. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
 
 	In order to calculate the accuracy of our model at each iteration, we need to match arbitrarily assigned Wolbachia strain names to the empirically derived strain names, as much as is possible. Again, this is done conservatively, if a community features two putative species delimitation clusters whose individuals all match up to a single Wolbachia strain, only one species will have their arbitrarily assigned Wolbachia strain names converted to match the empirical predictions. For example, if community #1 has two species clusters (e.g. ‘co1_w1’ and ‘co1_w2’) whose individuals have been shown to have the empirical strain ‘wspC6’ (see our data), then only the species cluster with the most matching individuals will be reassigned to the strain name ‘wspC6’. The second putative species will retain the arbitrarily assigned strain name (i.e. ‘co1_w1’ or ‘co1_w2’) and will therefore not contribute to the subsequent assessment of prediction accuracy. This is important, if this pattern of single Wolbachia strains across multiple species within a community was found in empirical data, it would suggest our model did not accurately represent natural patterns. Thus, our accuracy assessment is conservative and means that only empirical datasets that reflect our theoretical propositions will return high accuracy assessments. Thus alternatively, if the two species clusters’ (‘co1_w1’ and ‘co1_w2’) individuals were shown to have two distinct empirical strains (e.g. ‘wspC5’ and ‘wspC6’), both would contribute to higher accuracy assessments (both receiving reassigned strain names) and corroborate our model. NB if a species cluster in a separate community should also have the same strain (e.g. ‘wspC6’), WOLPREDICTOR will allow it to be named as such (as can be seen to occur in natural populations and is not in violation of our predictions).
 
-5. makePDF – output figures (.pdf & .png) of prediction accuracy
+6. makePDF3 – output figures (.pdf & .png) of prediction accuracy
 
 	We use the Python package matplotlib to output a graphical representation of predictive accuracy performed at each iteration. The flag: `-g`: indicates the gap between ticks on figure x-axis [default = 10]. The flag: `-q`: can be used to switch off makePDF with `-q 0` [default: `-q 1`]. The two flavours of *wolPredictor* determine some of the operating parameters: *tix* (0/1) determines whether the figures gets x-axis ticks (innappropriate for *wolPredictor_MANUAL.py*); *spl* ('div'/'nSpp') encodes a string used to process the data.
 
@@ -154,9 +156,9 @@ The user-inputted variables are [1] the name of the data file containing the sam
 
 
 
-**(2) *tabber.py*** will generate a results table at each considered species clustering iteration. 
+**(2) *wolTabber.py*** will generate a results table at each considered species clustering iteration. 
 
-It can be run as: `python tabber.py filename1 filename2 filename3 arg4`
+It can be run as: `python wolTabber.py filename1 filename2 filename3 arg4`
 
 These are: [1] - the "correctedWolPreds" file outputted by *wolPredictor*; [2] - the "taxonDesignations" file outputted by *wolPredictor*; [3] - the file outputted by *taxdegMatcher.py*; [4] - a prefix for the outputted file name
 
@@ -164,7 +166,7 @@ Outputted columns are [1] 'match' - species delimitation accuracy at this specie
 
 
 
-**(3) *outputInvestigator.py*** is a short script to investigate performance from the output files of the main program. The program *tabber.py* is much better for subsequent analyses/evaluation.
+**(3) *outputInvestigator.py*** is a short script to investigate performance from the output files of the main program. The program *wolTabber.py* is much better for subsequent analyses/evaluation.
 
 run as: `python outputInvestigator.py filename1 filename2 arg3 arg4 arg5`
 
