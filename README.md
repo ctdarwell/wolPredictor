@@ -164,6 +164,7 @@ These are: [1] - the "correctedWolPreds" file outputted by *wolPredictor*; [2] -
 
 Outputted columns are [1] 'match' - species delimitation accuracy at this species clustering iteration; [2] 'pgeIncr' - the best 'noWol' (i.e. uninfected with Wolbachia) prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration; [3] 'pgeIncr_wo_loss' - the best 'noWol' prediction improvement after the *wolPurger* has been applied at different thresholds at each species clustering iteration without compromising positive strain prediction abilities; [4] 'maxScore' - the best combined  prediction score of positive strain prediction + 'noWol' prediction including the effcet of *wolPurger*; [5] 'noPge_noWol' - the 'noWol' prediction accuracy without the action of the *wolPurger* function at each species clustering iteration; [6] 'noPge_posWol' - the  Wolbachia strain prediction without the action of the *wolPurger* function at each species clustering iteration; [7] - 'match_nSpp' species richness at each species clustering iteration.
 
+The format of the outputted file means is is simple to perform regression analyses on outputted data: e.g., *noPge_posWol ~ match*
 
 
 **(3) *outputInvestigator.py*** is a short script to investigate performance from the output files of the main program. The program *wolTabber.py* is much better for subsequent analyses/evaluation.
