@@ -34,7 +34,7 @@ DATA REQUIREMENTS:
 
 *wolPredictor* basically comes in two flavours according to method employed to delineate species richness clusters:
 
-OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. So, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
+OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
 Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
@@ -62,7 +62,7 @@ The following flags can be added to alter the default setting variables:
 
 `-p` prfx [default: "eco"]: Prefix of outputted file.
 
-Example: `python ecoCladeGenerator.py -c species` - runs the program for a data file where community has the column heading "species"
+Example: `python ecoCladeGenerator.py -d myData.csv -c species` - runs the program for a data file where community has the column heading "species"
 
 
 How to run *wolPredictor_MANUAL.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
