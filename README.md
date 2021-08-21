@@ -36,7 +36,11 @@ DATA REQUIREMENTS:
 
 OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. So, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
+Workflow1: 1. *ecoCladeGenerator.v1.py*; 2. *wolPredictor_MANUAL.v1.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
+
 OPTION #2: *wolPredictor_xmeansDelim.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
+
+Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py* (replace *taxdegMatcher.py* and *wolTabber.py* with *outputInvestigator.py* - if there is no a priori hypothesis of species richness featured in the main data file)
 
 **NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
