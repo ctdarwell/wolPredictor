@@ -6,7 +6,7 @@
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
-Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeansDelim.py* runs very quickly).
+Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeans.py* runs very quickly).
 
 PYTHON AND R LIBRARIES:
 
@@ -16,7 +16,7 @@ PYTHON AND R LIBRARIES:
 
 *pandas* - pandas.pydata.org
 
-*pyclustering* - pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeansDelim.py only)
+*pyclustering* - pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeans.py only)
 
 *matplotlib* - matplotlib.org
 
@@ -38,11 +38,11 @@ OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated tha
 
 Workflow1: 1. *ecoCladeGenerator.v1.py*; 2. *wolPredictor_MANUAL.v1.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
-OPTION #2: *wolPredictor_xmeansDelim.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
+OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
 
 Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py* (replace *taxdegMatcher.py* and *wolTabber.py* with *outputInvestigator.py* - if there is no a priori hypothesis of species richness featured in the main data file)
 
-**NB** It is recommended to use *wolPredictor_xmeansDelim.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially; or, if there is no apriori species richness hypothesis. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
+**NB** It is recommended to use *wolPredictor_xmeans.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially; or, if there is no apriori species richness hypothesis. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
 **OPTION #1 *wolPredictor*:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
 
@@ -75,11 +75,9 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-m` filename: Main input filename [defaults: "newTable_STS_manual_FinalVersion_arbDegs.csv"]
 
-`-q` pdf: Make figure (Off/On: 0/1). More suited to *wolPredictor_xmeansDelim.py* but can be run for general overview of results [default: 0].
+`-q` pdf: Make figure (Off/On: 0/1). More suited to *wolPredictor_xmeans.py* but can be run for general overview of results [default: 0].
 
 `-g` gap: Gap between ticks on figure x-axis  [default: 10].
-
-**MAYBE REMOVE!!** `-s` setting to "1" randomly shuffles the assayed Wolbachia strains - see `-w` flag - to perform a null test
 
 `-C` cntrl: Control strains in multiple communities (Off/On: 0/1) [default: '0']. Setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
 
@@ -94,9 +92,9 @@ You can also run the program from a Python IDE and alter the above parameters in
 After running the program you should use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
 
 
-**OPTION #2 *wolPredictor*:** How to run *wolPredictor_xmeansDelim.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+**OPTION #2 *wolPredictor*:** How to run *wolPredictor_xmeans.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
-`python wolPredictor_xmeansDelim.py -h`
+`python wolPredictor_xmeans.py -h`
 
 will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, key considerations are:
 
@@ -110,19 +108,19 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 See also above options with *wolPredictor_MANUAL.py*
 
-Description of function *calcX* in *wolPredictor_xmeansDelim.py* via X-means species delimitation: 
+**NB Description of function *calcX* in *wolPredictor_xmeans.py* via X-means species delimitation:** 
 In order to create putative species groupings, the program uses the pairwise co-phenetic distance matrix and X-means clustering to delimit species groupings. At each loop iteration, `wolPredictor` will calculate clusters of species for each value of species richness (i.e. between `-m` & `-M`). It should be emphasised that X-means will not always arrive at the same groupings for a specific level of species richness. Thus, you may want to run `wolPredictor` several times to assess optimum performance. NB optimum performance should occur whenever species clustering best reflects your empirical data’s Wolbachia distribution, so it is worth running the program a few times.
 
 So, to run the program you might type:
 
-`python wolPredictor_xmeansDelim.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
+`python wolPredictor_xmeans.py -d data_directory -o out_directory -m 5 -M 100 -i 5`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
 Also use *taxdegMatcher.py* and *tabber.py* for analysis and evaluation of results.
 
 
-Explanation of *wolPredictor* functions common to *wolPredictor_xmeansDelim.py* and *wolPredictor_MANUAL.py*
+Explanation of *wolPredictor* functions common to *wolPredictor_xmeans.py* and *wolPredictor_MANUAL.py*
 
 1. R_cophen: call R (‘ape’ library) to create cophenetic distance matrix
 
