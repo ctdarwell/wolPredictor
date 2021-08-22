@@ -79,6 +79,8 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-g` gap: Gap between ticks on figure x-axis  [default: 10].
 
+`-s` shuffle: Shuffle species clusters (Off/On: 0/1). Perform null analyses [default: 0].
+
 `-C` cntrl: Control strains in multiple communities (Off/On: 0/1) [default: '0']. Setting to "1" performs a more conservative analysis, where members of the same designated clade occupying different communities will only be permitted a single matched strain (i.e. in one community only)
 
 `-N` nPges: No. of purges at each species delim iteration (max=10) [default: '4']. This actually gives a non-precise outcome as it is used to calculate an integer from a division sum. The default should give a nice spread of purging thresholds (either 25%, 50%, 75% and 100% OR 20%, 40%, 60%, 80% and 100% of phylogenetic tree maximum pairwise branch length) - setting to 10 would give a more fine-scaled evaluation but is unlikely to be informative relative to the default and will just increase runtime.
