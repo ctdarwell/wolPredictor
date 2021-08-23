@@ -6,7 +6,7 @@
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
-Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. The program has not yet been optimised for vectorisation or parallelisation (NB *wolPredictor_xmeans.py* runs very quickly).
+Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. *wolPredictor_MANUAL.py* may take >1hr to run but *wolPredictor_xmeans.py* runs more quickly - some additional vectorisation or parallelisation may improve this but is probably not necessary.
 
 PYTHON AND R LIBRARIES:
 
@@ -25,22 +25,24 @@ PYTHON AND R LIBRARIES:
 
 DATA REQUIREMENTS:
 
-(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived Wolbachia strains (or absence of strain) for each sample (IMPORTANT: absence of Wolbachia should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
+(i) A CSV file with data columns featuring individual arthropod sample names, empirically derived *Wolbachia* strains (or absence of strain) for each sample (IMPORTANT: absence of *Wolbachia* should be coded as 'noWol'), and host community name (here labelled "*sp.complex*" - IMPORTANT: the first three characters of each community's name must be a unique combination of characters although the actual name can be longer than three characters). For using ecoCladeGenerator.py you require a column of ecological categories (our data is elevation - column name "elevation" in our data)
 
-(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4pyOut.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘exaData_faoReview.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4pyOut.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), file='yourFile.csv', quote = F, row.names = F)` ).
+(ii) A phylogenetic tree in nexus format. NB The program calls R (`cophen4pyOut.R`) using the Python library ‘subprocess’. If you cannot configure R (should be straightforward by adding R to your PATH in Windows: e.g. *C:\Program Files\R\R-3.6.2\bin* on my machine) to interact with Python you must use `wolPredictor_xmeansDelim_reduci.py` (see below) with the ‘exaData_faoReview.tre_cophen.csv’ file for a test run (for your own analyses without configuring R you will simply have to create a distance matrix of co-phenetic phylogenetic distances as formatted in the CSV file – see cophen4pyOut.R for the code in R create the file, NB replace the last line of R code with:  `write.csv(as.matrix(phydist), file='yourFile_cophen.csv', quote = F, row.names = F)` ).
 
 
 **Initial consideration**
 
 *wolPredictor* basically comes in two flavours according to method employed to delineate species richness clusters:
 
-OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation. So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
+OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
 Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
-OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an input phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
+OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an inputted phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
 
-Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py* (replace *taxdegMatcher.py* and *wolTabber.py* with *outputInvestigator.py* - if there is no a priori hypothesis of species richness featured in the main data file)
+Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py* 
+
+**NB** for both workflows, replace *taxdegMatcher.py* and *wolTabber.py* with *outputInvestigator.py* - if there is no *a priori* hypothesis of species richness featured in the main data file.
 
 **NB** It is recommended to use *wolPredictor_xmeans.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially; or, if there is no apriori species richness hypothesis. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
 
@@ -52,15 +54,15 @@ Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py*
 
 The following flags can be added to alter the default setting variables:
 
-`-s` swch [default: 1]: This determines whether disjunct populations can be considered when deciding species cluster designations. The option are [0 - allow disjunct combinations] and [1 - don't allow]. This obviously only makes sense if the ecological variable being considered has some kind of linear relationship (for our data, it makes sense not to allow species clusters of low and high altitude populations).
-
-`-e` ecoVar [default: "elevation"]: The column name of the ecological variable being examined. Variables can be added as any type e.g., categorical or numerical as long as they form discrete categories (e.g. our elevation variables consist of category values such as 200, 700, 1200 etc that repesent mean population altitude rather than the exact elevation of each sample)
-
-`-c` community [default: "community"]: The column name of host communities. For our example we are considering host fig species.
+`-s` swch [default: 1]: This determines whether disjunct populations can be considered when deciding species cluster designations. The option are [0 - allow disjunct combinations] and [1 - don't allow]. This obviously only makes sense if the ecological variable being considered has some kind of linear relationship (for our data, it makes sense not to allow species clusters merging disjunct low and high altitude populations).
 
 `-d` filename [default: "exaData_faoReview.csv"]: CSV file of data
 
-`-p` prfx [default: "eco"]: Prefix of outputted file.
+`-e` ecoVar [default: "elevation"]: The column name in the CSV file of the ecological variable being examined. Variables can be added as any type e.g., categorical or numerical as long as they form discrete categories (e.g. our elevation variables consist of category values such as 200, 700, 1200 etc that repesent mean population altitude rather than the exact elevation of each sample)
+
+`-c` community [default: "sp.complex"]: The column name of host communities. For our example we are considering host fig species complexes.
+
+`-p` prfx [default: "eco"]: Prefix of outputted files.
 
 Example: `python ecoCladeGenerator.py -d myData.csv -c species` - runs the program for a data file where community has the column heading "species"
 
@@ -90,18 +92,18 @@ So, to run the program you might type:
 `python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
 
-**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations. This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
+**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations (generated from our file). This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
-After running the program you should use *taxdegMatcher.py* and *wolTabber.py* for analysis and evaluation of results.
+After running the program you should use *taxdegMatcher.py* and *wolTabber.py* for analysis and evaluation of results if you have an *a priori* hypothesis of species richness.
 
 
 **OPTION #2 *wolPredictor*:** How to run *wolPredictor_xmeans.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_xmeans.py -h`
 
-will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, key considerations are:
+will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc) found in *wolPredictor_MANUAL.py*. However, key considerations are:
 
 `-m` min_nSpp: The minimum number of putative species clusters that X-means will divide the phylogenetic data into. NB must be ≥2 [default = 2].
 
@@ -127,23 +129,21 @@ Also use *taxdegMatcher.py* and *wolTabber.py* for analysis and evaluation of re
 
 Explanation of *wolPredictor* functions common to *wolPredictor_xmeans.py* and *wolPredictor_MANUAL.py*
 
-1. R_cophen: call R (‘ape’ library) to create cophenetic distance matrix
+1. Call R (‘ape’ library) to create cophenetic distance matrix (function: R_cophen).
 
-2. Uses X-means clustering to divide the branch length pair-wise distance matrix into *n* clusters (*wolPredictor_xmeans.py* only)
+2. Predict Wolbachia strain associations (function: addPredict). This relates to the **contact contingency hypothesis** in the paper.
 
-3. Predict Wolbachia strain associations (function: addPredict). This relates to the **contact contingency hypothesis** in the paper.
+	The program then assigns Wolbachia infection statuses. Under our working hypothesis, we expect that closely related, or contemporarily diverging, species in close ecological contact will host different Wolbachia strains that mediate reproductive isolation. Thus, `wolPredictor` assigns arbitrarily named strains to putative species groupings that co-occur in the same community. For example, if community #1 (e.g., 'arfakensis' in our data) has been allocated four putative species groupings, the program will assign the strain names ‘arf_1’, ‘arf_2’, 'arf_3' and ‘arf_4’ to all individuals in the three putative clusters. However, if community #2 (e.g., 'mic') has only been allocated a single putative species grouping its wasps will be assigned the strain name ‘noWol’ (i.e. no Wolbachia) as there is no additional putative species in the community from which Wolbachia should mediate reproductive isolation. If community #3 (e.g., 'wassa') is allocated two putative species, the strain names 'was_1' and 'was_2' will be assigned. NB in the actual program the numerical suffices may not be 1, 2, 3....etc but this is unimportant.
 
-	The program then assigns Wolbachia infection statuses. Under our working hypothesis, we expect that closely related, or contemporarily diverging, species in close ecological contact will host different Wolbachia strains that mediate reproductive isolation. Thus, `wolPredictor` assigns arbitrarily named strains to putative species groupings that co-occur in the same community. For example, if community #1 (labelled 'co1' in our data) has been allocated three putative species groupings, the program will assign the strain names ‘co1_w1’, ‘co1_w2’ and ‘co1_w3’ to all individuals in the three putative clusters. However, if community #2 (i.e. 'co2') has only been allocated a single putative species grouping its wasps will be assigned the strain name ‘noWol’ (i.e. no Wolbachia) as there is no additional putative species in the community from which Wolbachia should mediate reproductive isolation. If community #3 (i.e. 'co3') is allocated two putative species, the strain names 'co3_w1' and 'co3_w2' will be assigned. 
-
-4. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger). This relates to the **adaptive decay hypothesis** in the paper.
+3. Remove Wolbachia strains according to co-phenetic distance between species clusters (function: wolPurger). This relates to the **adaptive decay hypothesis** in the paper.
 
 	As Wolbachia has been shown to typically drop-out from host lineages after approx. 7 million years, our working hypothesis includes the possibility that species clusters separated by sufficient evolutionary time will have undergone Wolbachia purging. `wolPredictor` uses the co-phenetic distance matrix to incrementally remove Wolbachia according to cut-off thresholds between putative species clusters within a community. Species clusters that are separated by a distance greater that the incremental threshold will have their assigned Wolbachia strain converted to ‘noWol’. This is done conservatively, if there are three species within a community and the evolutionary distances between two of them are greater than the threshold, Wolbachia will not be purged if their evolutionary distances from the third species are below the threshold. Calculations are made for all threshold purging cut-offs (using the parameter ‘purge’, which sets the maximum purging distance iterated to from zero, at intervals set by ‘pge_incr’). At this point, all Wolbachia strain predictions at every species delimitation iteration are written to a CSV file with a root name ‘wolPreds’; this includes calculations for species delimitation iterations without any purging having been performed.
 
-5. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
+4. Match arbitrarily assigned Wolbachia strain names to empirically derived strain names (function: matchStrains)
 
 	In order to calculate the accuracy of our model at each iteration, we need to match arbitrarily assigned Wolbachia strain names to the empirically derived strain names, as much as is possible. Again, this is done conservatively, if a community features two putative species delimitation clusters whose individuals all match up to a single Wolbachia strain, only one species will have their arbitrarily assigned Wolbachia strain names converted to match the empirical predictions. For example, if community #1 has two species clusters (e.g. ‘co1_w1’ and ‘co1_w2’) whose individuals have been shown to have the empirical strain ‘wspC6’ (see our data), then only the species cluster with the most matching individuals will be reassigned to the strain name ‘wspC6’. The second putative species will retain the arbitrarily assigned strain name (i.e. ‘co1_w1’ or ‘co1_w2’) and will therefore not contribute to the subsequent assessment of prediction accuracy. This is important, if this pattern of single Wolbachia strains across multiple species within a community was found in empirical data, it would suggest our model did not accurately represent natural patterns. Thus, our accuracy assessment is conservative and means that only empirical datasets that reflect our theoretical propositions will return high accuracy assessments. Thus alternatively, if the two species clusters’ (‘co1_w1’ and ‘co1_w2’) individuals were shown to have two distinct empirical strains (e.g. ‘wspC5’ and ‘wspC6’), both would contribute to higher accuracy assessments (both receiving reassigned strain names) and corroborate our model. NB if a species cluster in a separate community should also have the same strain (e.g. ‘wspC6’), WOLPREDICTOR will allow it to be named as such (as can be seen to occur in natural populations and is not in violation of our predictions).
 
-6. makePDF3 – output figures (.pdf & .png) of prediction accuracy
+5. makePDF3 – output figures (.pdf & .png) of prediction accuracy
 
 	We use the Python package matplotlib to output a graphical representation of predictive accuracy performed at each iteration. The flag: `-g`: indicates the gap between ticks on figure x-axis [default = 10]. The flag: `-q`: can be used to switch off makePDF with `-q 0` [default: `-q 1`]. The two flavours of *wolPredictor* determine some of the operating parameters: *tix* (0/1) determines whether the figures gets x-axis ticks (innappropriate for *wolPredictor_MANUAL.py*); *spl* ('div'/'nSpp') encodes a string used to process the data.
 
