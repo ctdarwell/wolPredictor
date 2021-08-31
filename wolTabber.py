@@ -64,7 +64,8 @@ df.columns = ['taxDeg','match','pgeIncr','pgeIncr_wo_loss','maxScore','noPge_noW
 
 def myfunc(a): return int(a.split('Spp')[-1])
 vfunc = np.vectorize(myfunc)
-df['match_nSpp'] = vfunc(df.taxDeg)
+try: df['match_nSpp'] = vfunc(df.taxDeg) #depending on version it adds an extra column indicating n species at each division
+except: pass
 
 df.to_csv(f'{prfx}_assocVars.csv', index=False)
 
