@@ -36,6 +36,8 @@ DATA REQUIREMENTS:
 
 OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
+ADDITIONAL OPTION: There is a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option. It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt screen but runs otherwise fine.
+
 Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
 OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an inputted phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
@@ -67,7 +69,7 @@ The following flags can be added to alter the default setting variables:
 Example: `python ecoCladeGenerator.py -d myData.csv -c species` - runs the program for a data file where community has the column heading "species"
 
 
-How to run *wolPredictor_MANUAL.py*: The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+How to run *wolPredictor_MANUAL.py* (*wolPredictor_MANUAL_parallel.py*): The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
 `python wolPredictor_MANUAL.py -h`
 
@@ -91,6 +93,7 @@ So, to run the program you might type:
 
 `python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
+`python wolPredictor_MANUAL_parallel.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
 **NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations (generated from our file). This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
 
