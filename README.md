@@ -36,7 +36,7 @@ DATA REQUIREMENTS:
 
 OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
-ADDITIONAL OPTION: There is a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option. It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt screen but runs otherwise fine.
+ADDITIONAL OPTION: There is now a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option. It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt consol screen but runs otherwise fine. I see no reason not to use it.
 
 Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
@@ -89,7 +89,7 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 `-N` nPges: No. of purges at each species delim iteration (max=10) [default: '4']. This actually gives a non-precise outcome as it is used to calculate an integer from a division sum. The default should give a nice spread of purging thresholds (either 25%, 50%, 75% and 100% OR 20%, 40%, 60%, 80% and 100% of phylogenetic tree maximum pairwise branch length) - setting to 10 would give a more fine-scaled evaluation but is unlikely to be informative relative to the default and will just increase runtime.
 
-So, to run the program you might type:
+So, to run the program (or parallelised version) you might type:
 
 `python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
