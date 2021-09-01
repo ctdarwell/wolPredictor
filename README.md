@@ -6,7 +6,7 @@
 Outline of Problem:
 It has been regularly suggested that highly prevalent Wolbachia induced reproductive isolation among arthropods appears randomly distributed among closely related host species. If so, this implies that much arthropod biodiversity is a result of stochastically determined diversification events rather than process driven outcomes. For most arthropods we have limited knowledge about ecological contact which provides direct opportunity for horizontal exchange of microbes or genetic material between species. Here, I use Python programming to model our proposed mechanism that incorporates ecological contact in a phylogenetic context. 
 
-Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. *wolPredictor_MANUAL.py* may take >1hr to run (but see also now *wolPredictor_MANUAL_parallel.py* below) but *wolPredictor_xmeans.py* runs more quickly - some additional vectorisation or parallelisation may improve this but is probably not necessary.
+Providing all correct Python and R libraries are installed the program should run directly from the unzipped download bundle. *wolPredictor_MANUAL_parallel.py* can run in minutes on a HPC and *wolPredictor_xmeans.py* also runs quickly. *wolPredictor_MANUAL.py* may take a while but there should be no need to use this.
 
 PYTHON AND R LIBRARIES:
 
@@ -16,9 +16,9 @@ PYTHON AND R LIBRARIES:
 
 *pandas* - pandas.pydata.org
 
-*pyclustering* - pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeans.py only)
-
 *matplotlib* - matplotlib.org
+
+*pyclustering* - pyclustering.github.io/docs/0.8.2/html/index.html (NB for wolPredictor_xmeans.py only)
 
 (ii) R requires the *ape* library installing - `install.packages(ape)`
 
@@ -34,11 +34,11 @@ DATA REQUIREMENTS:
 
 *wolPredictor* basically comes in two flavours according to method employed to delineate species richness clusters:
 
-OPTION #1: *wolPredictor_MANUAL.py* (or *wolPredictor_MANUAL_parallel.py*) requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
+OPTION #1: *wolPredictor_MANUAL_parallel.py* (or *wolPredictor_MANUAL.py*) requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
-ADDITIONAL OPTION: There is now a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option (see below). It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt consol screen but runs otherwise fine. I recommend this version.
+*wolPredictor_MANUAL_parallel.py* runs faster than *wolPredictor_MANUAL.py* - about 3x faster on my 4 core laptop and about 15x faster on a HPC with 200Gb RAM amd 24 cores - but does not have the `-s` shuffle option (see below). It produces some weirdly verbose output on the Anaconda Prompt consol screen but runs otherwise fine. I recommend this version.
 
-Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
+Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL_parallel.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
 OPTION #2: *wolPredictor_xmeans.py* divides samples into species clusters according to an inputted phylogenetic tree. Iteratively, is divides species into a (user inputted) range of species richness values using X-means evaluation of pairwise branch length distances.
 
@@ -46,7 +46,7 @@ Workflow2: 1. *wolPredictor_xmeans.py*; 2. *taxdegMatcher.py*; 3. *wolTabber.py*
 
 **NB** for both workflows, replace *taxdegMatcher.py* and *wolTabber.py* with *outputInvestigator.py* - if there is no *a priori* hypothesis of species richness featured in the main data file.
 
-**NB** It is recommended to use *wolPredictor_xmeans.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially; or, if there is no apriori species richness hypothesis. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py* may allow a more systematic and detailed investigation of partterns.
+**NB** It is recommended to use *wolPredictor_xmeans.py* when numbers of communities gets high (e.g. above 8 or so) as the number of permutations outputted by *ecoCladeGenerator.py* grows exponentially; or, if there is no apriori species richness hypothesis. However, using *ecoCladeGenerator.py* and *wolPredictor_MANUAL_parallel.py* (*wolPredictor_MANUAL.py*) may allow a more systematic and detailed investigation of partterns (and the paralellised version should still be able to handle large data files on a HPC).
 
 **OPTION #1 *wolPredictor*:** How to run *ecoCladeGenerator.py* and *wolPredictor_MANUAL.py*: 
 
@@ -69,9 +69,9 @@ The following flags can be added to alter the default setting variables:
 Example: `python ecoCladeGenerator.py -d myData.csv -c species` - runs the program for a data file where community has the column heading "species"
 
 
-How to run *wolPredictor_MANUAL.py* (*wolPredictor_MANUAL_parallel.py*): The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
+How to run *wolPredictor_MANUAL_parallel.py* (*wolPredictor_MANUAL.py*): The program can be run from a Python3 console (e.g. Spyder/Anaconda). Typing:
 
-`python wolPredictor_MANUAL.py -h`
+`python wolPredictor_MANUAL_parallel.py -h`
 
 will bring up a menu of parameter options. Most are straightforward and relate to data input option (filenames & directories etc). However, key considerations are:
 
@@ -91,11 +91,11 @@ will bring up a menu of parameter options. Most are straightforward and relate t
 
 So, to run the program (or parallelised version) you might type:
 
-`python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
-
 `python wolPredictor_MANUAL_parallel.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
 
-**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations (generated from our file). This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL.py -r randomDegs_n200.csv`
+`python wolPredictor_MANUAL.py -m newDataFile.csv -d data_directory -o out_directory -p EcoVariables -N 10`
+
+**NB** as it stands *ecoCladeGenerator.py* will output a file: *ecoDelim_communityXelevation_constr.csv* featuring 8192 permuations of species delimitations (generated from our file). This will take around 80 minutes to run in *wolPredictor_MANUAL.py*. We provide a smaller test file - *randomDegs_n200.csv* - to run: `python wolPredictor_MANUAL_parallel.py -r randomDegs_n200.csv`
 
 You can also run the program from a Python IDE and alter the above parameters in the code.
 
