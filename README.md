@@ -10,7 +10,7 @@ Providing all correct Python and R libraries are installed the program should ru
 
 PYTHON AND R LIBRARIES:
 
-(i) The following library dependencies are required for the Python scripts to run (NB in an interpreter window on Windows or Anaconda, or a terminal in Linux/Mac: `pip install <LIBRARY>` OR `conda install <LIBRARY>` if you're using Anaconda):
+(i) The following library dependencies are required for the Python scripts to run. NB in an interpreter window on Windows or Anaconda, or a terminal in Linux/Mac: `pip install <LIBRARY>` (or `conda install <LIBRARY>` - if you're using Anaconda):
 
 *numpy* - numpy.org
 
