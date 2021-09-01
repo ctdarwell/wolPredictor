@@ -36,7 +36,7 @@ DATA REQUIREMENTS:
 
 OPTION #1: *wolPredictor_MANUAL.py* requires an initial file to be generated that features different combinations of species designations among host insect samples in the dataset. For this purpose, the program *ecoCladeGenerator.py* divides samples into species clusters according to associated ecological categories within individual communities. For example, for our data it is clear that our wasp lineages are strongly correlated with population elevation (a common pattern). So, for a community featuring samples collected at 100m, 200m and 300m elevation, *ecoCladeGenerator.py* creates all combinations of species clusters: [[100, 200, 300]], [[100, 200], [300]], [[100], [200, 300]] and [[100], [200], [300]]. Whether it will also include species clusters featuring disjunct elevations (i.e. [[100, 300], [200]]) is decided by user input.
 
-ADDITIONAL OPTION: There is now a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option. It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt consol screen but runs otherwise fine. I recommend this version.
+ADDITIONAL OPTION: There is now a parallelised version called *wolPredictor_MANUAL_parallel.py* - it runs exactly the same as *wolPredictor_MANUAL.py* but without the `-s` shuffle option (see below). It runs about 3x faster on my 4 core laptop. It produces some weirdly verbose output on the Anaconda Prompt consol screen but runs otherwise fine. I recommend this version.
 
 Workflow1: 1. *ecoCladeGenerator.py*; 2. *wolPredictor_MANUAL.py*; 3.*taxdegMatcher.py*; 4. *wolTabber.py*
 
