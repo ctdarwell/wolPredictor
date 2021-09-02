@@ -144,7 +144,7 @@ def main():
     print("Finished function addPredict:", str(timer() - start))
 
     #run wolPurger
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         res = [result for result in results] #results from addPredict
         thresh2 = [_ for _ in range(pge_incr, purge + 1, pge_incr)]
         pgeRes = executor.map(wolPurger, res, itertools.repeat(thresh2), itertools.repeat(cophen), chunksize=chunksize) #purge wol at incremental thresholds at this spp delim
@@ -176,7 +176,7 @@ def main():
     print("Finished function wolPurger:", str(timer() - start))
     
     #run matchStrains
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         asses = [assigned[:, x] for x in range(2, assigned.shape[1])]
         assCols = [z.split('_')[0] for z in cols][2:]
         matches = executor.map(matchStrains, asses, assCols, chunksize=chunksize) #purge wol at incremental thresholds at this spp delim
