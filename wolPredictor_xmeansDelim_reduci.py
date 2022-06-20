@@ -4,13 +4,13 @@
 import numpy as np
 from numpy import genfromtxt
 import csv
-import subprocess
 import pandas as pd
 from timeit import default_timer as timer
 import itertools
 from pyclustering.cluster.xmeans import xmeans
 from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
 import re
+import makePDF3 as mp
 
 ###### SET SOME PARAMETERS!!!!! ######
 increment = 100 #how many divisions btwn upper & lower to split "species". LEAVE AS 100
@@ -20,14 +20,17 @@ prefix = 'TEST' #add a prefix to file names - do NOT use 'x'
 min_nSpp = 6 #min no. species from Xmeans - must be >=2
 max_nSpp = 50 #max no. species from Xmeans
 nSpp_incr = 1 #nSpp increment
+gap = 10
+tix = 1 #put xticks on figure
 
 wolbachia = 'wspClade' #column name of empirical Wolbachia strain data
 comm_column = 'community' #column name of host community
-filename = 'testData.csv' #data file
-tree = 'testPhylo.tre' # tree file
-NameOnPhylo = 'NameOnPhylo' #column name of taxon names
+filename = 'exaData_faoReview.csv' #data file
+tree = 'exaData_faoReview.tre' # tree file
+NameOnPhylo = 'taxa' #column name of taxon names
 out_dir = '.'
 
+#Load and organise data
 with open(filename) as f:
     reader = csv.reader(f)
     columns = next(reader)
@@ -42,20 +45,18 @@ wols = np.delete(wols, np.where(wols == 'noWol'), axis=0)
 comms = np.unique(dat[:, [colmap.get(comm_column)]])
 cols, taxaCols = ['taxa', 'wspClade'], ['taxa']
 z = len(str(purge)) #fao CSV column name house-keeping (i.e. zfill length)
-path2script = 'cophen4py.R'
 
 def main():
-    '''
-    Main pgm control function
-    '''
-    if 'x' in prefix:
+    '''Main pgm control function'''
+    if 'x' in prefix: #check prefix name won't disrupt downstrean processing 
         print('RUN STOPPED: Do NOT use a small "x" in "prefix" variable!')
         return
-    f = '{}-{}x{}_prg{}'.format(min_nSpp, max_nSpp, increment, purge) #STRING CONSTRUCTION!!!!!!!!!!!!!!!!
+    f = '{}-{}x{}_prg{}'.format(min_nSpp, max_nSpp, increment, purge) #STRING CONSTRUCTION
     print('Running "wolPredictor" - params:', prefix, f)
-    #R_cophen(tree, path2script)
-    cophen = genfromtxt('{}_cophen.csv'.format(tree), dtype = 'float32', delimiter=',', skip_header = 1)
-    x1, x2 = 0, 0 #calc array dims
+    cophen = genfromtxt('{}_cophen.csv'.format(tree), dtype = 'float32', delimiter=',', skip_header = 1) #get distance matrix
+
+    #build empty DFs for adding predictions
+    x1, x2 = 0, 0 #calc array dimensions
     for _ in range(min_nSpp, max_nSpp, nSpp_incr): x1 += 1
     for _ in range(0, purge + 1, pge_incr): x2 += 1
     assigned, taxonDesignations, tmpDF = np.empty((len(taxa), (x1 * (x2 + 1)) + 2), dtype='U20' ), np.empty((len(taxa), (x1) + 1), dtype='U20' ), np.empty((len(taxa), 2), dtype='U20' )
@@ -65,15 +66,17 @@ def main():
     taxonDesignations[:, 0] = np.squeeze(dat[:, [colmap.get(NameOnPhylo)]])
     start = timer()
 
+    #cycle thru species richness range
     for nSpp in range(min_nSpp, max_nSpp, nSpp_incr):
         if nSpp % (increment/10) == 0: print('Matrix iteration: ', str(nSpp), ' - time: ', str(timer() - start)[:-8])
-        res = calcX(cophen, nSpp) #get optimal Xmeans cluster
+        res = calcX(cophen, nSpp) #get optimal Xmeans clustering for species richness level
         df = addPredict(res, nSpp, tmpDF) #spDelim is delimited clusters in actual host comms
-        taxonDesignations[:, len(taxaCols) - 1] = res
-        assigned[:, len(cols) - 1] = df[:, 1]
-        tupl_df = tuple(df)
-        for thresh2 in range(0, purge + 1, pge_incr): assigned = wolPurger(assigned, np.array(tupl_df), thresh2, nSpp, cophen)
+        taxonDesignations[:, len(taxaCols) - 1] = res #record species clusters
+        assigned[:, len(cols) - 1] = df[:, 1] #record predictions at species richness level
+        tupl_df = tuple(df) #immutable DF
+        for thresh2 in range(0, purge + 1, pge_incr): assigned = wolPurger(assigned, np.array(tupl_df), thresh2, nSpp, cophen) #employ incremental Wolbachia purging algorithm
 
+    #write initial DFs as record of examined parameters
     output1 = pd.DataFrame(assigned)
     output1.columns = [cols]
     output1.to_csv('{}/{}_wolPreds_incr{}.csv'.format(out_dir, prefix, f), index = False)
@@ -81,11 +84,18 @@ def main():
     output2.columns = [taxaCols]
     output2.to_csv('{}/{}_taxonDesignations_{}.csv'.format(out_dir, prefix, f), index = False)
     
+    #calculate accuracy of predictions and output
     assigned = matchStrains(assigned, taxonDesignations, start)
-    
     output3 = pd.DataFrame(assigned)
     output3.columns = [cols]
     output3.to_csv('{}/{}_correctedWolPreds_incr{}.csv'.format(out_dir, prefix, f), index = False)
+
+    #make figure (call external function)
+    print("Analyses complete. Making figures....")
+    mp.makePDF('{}/{}_correctedWolPreds_incr{}.csv'.format(out_dir, prefix, f), gap, tix, 'nSpp')
+    print('\n\t....Figures outputted to "', out_dir, '"\n', sep = '')
+
+
     print("Time:", str(timer() - start)[:-8])
 
 def addPredict(res, nSpp, tmpDF):
@@ -204,10 +214,6 @@ def matchStrains(assigned, taxonDesignations, start):
 
     return assigned
 
-def R_cophen(tree, path2script):
-    cmd = 'Rscript ' + path2script + ' ' + tree #Build subprocess command
-    with open("PCPS_4_py.err", "wb") as err:
-        subprocess.run(cmd, stderr=err)
 
 def calcX(mat, nSpp):
     '''
