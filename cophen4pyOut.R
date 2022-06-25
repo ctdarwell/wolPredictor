@@ -1,3 +1,4 @@
+if (!require("ape")) install.packages("ape")
 library(ape)
 rm(list=ls())
 
