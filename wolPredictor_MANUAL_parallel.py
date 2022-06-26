@@ -16,7 +16,7 @@ import makePDF3 as mp
 import concurrent.futures
 
 ###### SET SOME PARAMETERS!!!!! ######
-cntrl = 0 # [1] doesn't allow same Wolbachia strains in different communities (more conservative analysis)
+cntrl = 0 # [1] doesn't allow same Wolbachia strains in different communities (is more conservative, but not actually realistic, analysis)
 prefix = 'multi' #add a prefix to file names - do NOT use a small 'x'
 pdf = 1 #switch on pdf maker
 gap = 10 #gap btwn ticks on figure x-axis
