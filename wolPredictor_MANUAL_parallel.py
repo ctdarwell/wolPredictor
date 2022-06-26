@@ -16,7 +16,7 @@ import makePDF3 as mp
 import concurrent.futures
 
 ###### SET SOME PARAMETERS!!!!! ######
-cntrl = 0 #####
+cntrl = 0 # [1] doesn't allow same Wolbachia strains in different communities (is more conservative, but not actually realistic, analysis)
 prefix = 'multi' #add a prefix to file names - do NOT use a small 'x'
 pdf = 1 #switch on pdf maker
 gap = 10 #gap btwn ticks on figure x-axis
@@ -25,16 +25,16 @@ increment = 100 #how many divisions btwn upper & lower to split "species". LEAVE
 max_workers = None #nProcesses - leave as default on HPC; set as no. processors on your machine -1 for laptops/Desktops 
 chunksize = 1 #break up of parallelisation chunks; large values may be faster for larger datasets
 
-spp_delim = 'randomDegs_n200.csv' #'tmpDegs.csv'
+spp_delim = 'randomDegs_n200.csv' # file of compared species diversity hypotheses 
 filename = 'exaData_faoReview.csv' #data file
-wolbachia = 'wspClade' #hypo_wspClade
+wolbachia = 'wspClade' #column of empirical Wolbachia assigments in data file
 comm_column = 'sp.complex' #community column in data file
 NameOnPhylo = 'taxa' #phylogeny taxa names column
 tree = 'exaData_faoReview.tre' # tree file
-dat_dir, out_dir = '.', '.' #output directory
+dat_dir, out_dir = '.', '.' #in/output directory
 path2script = 'cophen4pyOut.R' #R script
 
-#read any new params
+#read any new params entered by user
 if '-h' in sys.argv:
     print("\n --Flag: Variable Name - Explanation - Default Value\n\n '-p': prefix - add a prefix to file names - default = '{}' (NB do NOT use a small 'x')\n '-r': spp_delim - filename of pre-defined taxon designations - default = '{}'\n '-f': filename - main input data file - default = '{}'\n '-w': wolbachia - column name for empirically derived Wolbachia strains - default = '{}'\n '-c': comm_column - column name for host communities - default = '{}'\n '-n': NameOnPhylo - column name for sample individual names - default = '{}'\n '-t': tree - input phylogenetic tree - default = '{}'\n '-o': out_dir - output directory - default = '{}'\n '-d': dat_dir - data files directory - default = '{}'\n '-q': pdf - make figure (Off/On: 0/1) - default = '{}'\n '-g': gap between ticks on figure x-axis - default = '{}'\n '-C': control strains in multiple communities (Off/On: 0/1) - default = '{}'\n '-N': No. of purges at each species delim iteration (max=10) - default = '{}'\n '-P': No. of CPUs - default = '{}' (defaults to all available CPUs; e.g. HPC usage)\n '-S': parallelisation data chunksize (incr for large datasets) - default = '{}'\n"
           .format(prefix, spp_delim, filename, wolbachia, comm_column, NameOnPhylo, tree, out_dir, dat_dir, pdf, gap, cntrl, nPges, max_workers, chunksize))
@@ -90,14 +90,16 @@ f, myopts = None, None
 dat = genfromtxt('{}/{}'.format(dat_dir, filename), delimiter=',', dtype = 'U20', skip_header = 1) # working CSV = datMLformatted_geiger2.csv
 dat = dat[dat[:, colmap.get(NameOnPhylo)].argsort()]
 
-#get taxDeg colNames
+#get colNames from spp_delim file
 with open('{}/{}'.format(dat_dir, spp_delim)) as f2:
     reader = csv.reader(f2)
     degCols = next(reader)
 
+#open and organise spp_delim file
 taxonDesignations = genfromtxt('{}/{}'.format(dat_dir, spp_delim), delimiter=',', dtype = 'U20', skip_header = 1) # working CSV = datMLformatted_geiger2.csv
 taxonDesignations = taxonDesignations[taxonDesignations[:, 0].argsort()]
 
+#organise params: sample names, Wol strains, community names
 taxa = np.squeeze(dat[:, [colmap.get(NameOnPhylo)]])
 wols = np.unique(dat[:, [colmap.get(wolbachia)]])
 wols = np.delete(wols, np.where(wols == 'noWol'), axis=0)
@@ -107,7 +109,7 @@ cols, taxaCols = cl.deque(['taxa', 'wspClade']), cl.deque(['taxa'])
 newDegCols = ['taxa'] #make an additional list for taxon degs column names
 for deg in degCols[1:]: newDegCols.append(f"{deg}_nSpp{np.unique(taxonDesignations[:, degCols.index(deg)]).shape[0]}")
 
-#vfuncs fao addPredict/wolPurger
+#vfuncs fao addPredict/wolPurger functions
 def f1(comm, x): return f"{comm[:3]}_{x}"
 vf1 = np.vectorize(f1, excluded=['comm']) #, otypes=['O']
 
@@ -116,18 +118,17 @@ vf2 = np.vectorize(f2)
 
 #Main control loop
 def main():
-    '''
-    Main pgm control function
-    '''
+    '''Main pgm control function'''
     if 'x' in prefix:
         print('RUN STOPPED: Do NOT use a lower case "x" in "prefix" variable!')
         return
 
     #check_ape, get phylo, make df
     cophen, purge, pge_incr, z, _ = R_cophen('{}/{}'.format(dat_dir, tree), path2script) #get Dist Mat from phylogeny in R
-    f = f"n{taxonDesignations.shape[1] - 1}_sppDelims" #'{}x{}_prg{}'.format(min_nSpp, max_nSpp - 1, purge) #original max_nSpp val
+    f = f"n{taxonDesignations.shape[1] - 1}_sppDelims" # output file prefix
     print(f'\nRunning "wolPredictor_MANUAL" - params: {prefix}_{f}')
 
+    #create main analysis DF
     assigned = np.empty((len(taxa), ((taxonDesignations.shape[1] - 1) * (1 + _)) + 2), dtype='U20' )
     print('Matx shape', assigned.shape, 'TaxaShape', taxonDesignations.shape)
 
@@ -136,14 +137,14 @@ def main():
 
     start = timer()
 
-    #run addPredict
+    #run addPredict function
     with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         clades = [taxonDesignations[:, delim] for delim in range(1, taxonDesignations.shape[1])]
         results = executor.map(addPredict, clades, list(range(1, taxonDesignations.shape[1])), chunksize=chunksize)
 
     print("Finished function addPredict:", str(timer() - start))
 
-    #run wolPurger
+    #run wolPurger function
     with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         res = [result for result in results] #results from addPredict
         thresh2 = [_ for _ in range(pge_incr, purge + 1, pge_incr)]
@@ -175,7 +176,7 @@ def main():
 
     print("Finished function wolPurger:", str(timer() - start))
     
-    #run matchStrains
+    #run matchStrains function
     with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         asses = [assigned[:, x] for x in range(2, assigned.shape[1])]
         assCols = [z.split('_')[0] for z in cols][2:]
@@ -228,7 +229,7 @@ def addPredict(res, nSpp):
     indvs will be given different strains if there are >=2 different taxon designations in a community 
     '''
     wolClades, tmpTaxa = cl.deque([]), cl.deque([])
-    for comm in comms: #go thru fig host comms
+    for comm in comms: #go thru fig host communities
         indvs = dat[np.where(dat[:, colmap.get(comm_column)] == comm)][:, colmap[NameOnPhylo]] #taxon names in the comm
         tmpTaxa.extend(indvs)
         clusters = res[np.isin(taxa, indvs)] #get taxon delims for those indvs
@@ -247,7 +248,7 @@ def wolPurger(df, thresh2, cophen):
             -at low thresh2 vals - most strains are purged (as most distances between clades are greater than thresh2)
             -at hi thresh2 vals - most are retained
     '''
-    pgeDF = np.vstack([df] * len(thresh2)).T #create array of predictions (from addPredict)large enough for all purge thresholds
+    pgeDF = np.vstack([df] * len(thresh2)).T #create array of predictions (from addPredict) large enough for all purge thresholds
     
     for thresh in thresh2: #at each thresh
         dfm = np.column_stack((taxa, pgeDF[:, thresh2.index(thresh)])) #tmp array of taxa & predictions
@@ -265,7 +266,7 @@ def wolPurger(df, thresh2, cophen):
      
         setStrains, sortPairs, strainComms = sorted(list(set(indv_strains))), [sorted(i) for i in pairs], list(set([x.split('_')[0] for x in indv_strains])) #strainComms = all communities with strains
     
-        for sc in strainComms: #'tri', 'mic'
+        for sc in strainComms: #strainComms = all communities with strains eg 'tri', 'mic'
             matches = [string for string in setStrains if re.match(re.compile(sc + '.'), string)] #count no. clades/strains in this community
             for strain in setStrains: #['mic_w1', 'mic_w2', 'tri_w1', 'tri_w2', 'tri_w3']
                 if sc in strain:
@@ -279,10 +280,10 @@ def wolPurger(df, thresh2, cophen):
 def matchStrains(pred, col):
     '''
     match the predictions with the empirically (yet arbritarily) named strains as much as possible
-    ISSUE: the 2nd block may not find a solution (e.g. thresh16_noPurge):
+    OCCASIONAL ISSUE: the 2nd block may not find a solution (e.g. thresh16_noPurge):
         -because it does not remove previously attempted suboptimal solutions (attempted if optimal soln doesn't solve)
         -i.e. 'replace_with' is retained and attempted again at the next iteration if the solution doesn't work
-        -currently fudged to give up at 20 attempts (basically a heuristic search)
+        -currently tries iterative 20 attempts (basically a heuristic search) - gives conservative answer if no solution (but normally solves within 2-3 attempts)
     '''
     #identify best matches - concatenate wspClade/species delim/predictions in one d.f.
     df = np.concatenate([dat[:, colmap.get(wolbachia)], taxonDesignations[:, degCols.index(col)], pred], axis = 0).reshape(3, len(taxa)).T
