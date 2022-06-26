@@ -123,7 +123,7 @@ def main():
         print('RUN STOPPED: Do NOT use a lower case "x" in "prefix" variable!')
         return
 
-    #get phylo, make df
+    #check_ape, get phylo, make df
     cophen, purge, pge_incr, z, _ = R_cophen('{}/{}'.format(dat_dir, tree), path2script) #get Dist Mat from phylogeny in R
     f = f"n{taxonDesignations.shape[1] - 1}_sppDelims" #'{}x{}_prg{}'.format(min_nSpp, max_nSpp - 1, purge) #original max_nSpp val
     print(f'\nRunning "wolPredictor_MANUAL" - params: {prefix}_{f}')
@@ -205,6 +205,8 @@ def R_cophen(tree, path2script):
     '''
     Build cophenetic distance matrix from inputted tree and decide purging parameters according to max(cophen)
     '''
+    check_ape = ['Rscript', f'{dat_dir}/check_ape.R'] #check 'ape' is installed in R...
+    subprocess.run(check_ape) #....and install if not present
 
     cmd = ['Rscript', f'{dat_dir}/{path2script}', f'{dat_dir}/{tree}'] #Build subprocess command
     out = subprocess.run(cmd, universal_newlines = True, stdout = subprocess.PIPE)
