@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import csv
 #from numpy import genfromtxt
 
-def makePDF(f, gap, tix, spl):
+def makePDF(f, gap, tix, spl): #read output from wolPredictor
     with open(f) as file:
         reader = csv.reader(file)
         columns = next(reader)
@@ -20,7 +20,7 @@ def makePDF(f, gap, tix, spl):
             neg.append(0), pos.append(0)
             continue
         tmp = []
-        for w in wsp:
+        for w in wsp: #calc no.s of accurate Wol and noWol predictions
             qw = np.where(dat[:, 1] == w)
             qw2 = np.where(dat[:, j] == w)
             tmp.append(len(np.intersect1d(qw, qw2)))
@@ -48,10 +48,10 @@ def makePDF(f, gap, tix, spl):
     data_stack = cumulated_data
 
     #build x-tick mark lists
-    nSpp, sppPosns, nPges = [], [], [] #sppPosns comes up short sometimes
+    sppPosns = []
     M = columns[-1].split('_')[0].split(spl)[1] # = final spp iteration value
-    [nSpp.append(i) for i in range(gap, int(M) + 1, gap)] #tick marks
-    [nPges.append(1) for c in columns if M in c] # = no. of columns at ea spp iteration
+    nSpp = [i for i in range(gap, int(M) + 1, gap)] #tick marks
+    nPges = [1 for c in columns if M in c] # = no. of columns at ea spp iteration
     space = int(M) - int(columns[-1 - len(nPges)].split('_')[0].split(spl)[1]) #species delim iteration gap
     x = (len(pos) - len(nPges)) - ((len(nPges) * (int(M) % gap)) / space) #tick posns
     while len(sppPosns) < len(nSpp):
@@ -59,10 +59,9 @@ def makePDF(f, gap, tix, spl):
         x -= (len(nPges) * gap / space)
 
     #build y-tick mark lists
-    ytix = []
     up = max(pos) - (max(pos) % 50) + 50
     down = min(neg) + (50 - (min(neg) % 50)) - 50
-    [ytix.append(i) for i in range(down, up + 1, 50)]
+    ytix = [i for i in range(down, up + 1, 50)]
     
     cols = ['C1', 'b']
     fig = plt.figure()
