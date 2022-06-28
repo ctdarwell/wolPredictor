@@ -7,7 +7,7 @@ oviLayers = [1, 0.75, .5, 0.25, 0] #survival %s according to oviposition layers 
 fec = 1000 #potential foundress egg load
 incrs = 100 #increments in fitness to assess (btwn 0-1)
 nreps = 10 #nReplicates to take mean result from
-start, jumps = 5, 5 #start value of consp proportions and increments to cycle thru
+start, jumps = 5, 10 #start value of consp proportions and increments to cycle thru
 
 def fitnesses(propCons, fitness):
     remain = int(fec * propCons) #viable eggs remaining under CI acounting for heterospp matings
