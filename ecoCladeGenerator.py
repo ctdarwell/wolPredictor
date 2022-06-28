@@ -2,7 +2,7 @@
 #for numpy implementation maybe able to use np.meshgrid for combinations: 
 #https://stackoverflow.com/questions/1208118/using-numpy-to-build-an-array-of-all-combinations-of-two-arrays
 
-#THIS NEEDS TO OUTPUT AS INT AND NOT FLOATS!!!!!!!!!!!!!
+#THIS NEEDS TO OUTPUT AS INT AND NOT FLOATS!
 import numpy as np, sys, getopt
 import pandas as pd
 
