@@ -3,7 +3,7 @@
 #communities have different matched strains.
 #NB spp delim performed via file of pre-defined designations 
 
-#THIS IS PARALLELISED 
+#THIS IS PARALLELISED!!!
 #AROUND 3X QUICKER ON MY 4 CORE 16GB RAM LAPTOP
 #AROUND 15X QUICKER ON HPC WITH 200GB RAM & 24 CORES
 
