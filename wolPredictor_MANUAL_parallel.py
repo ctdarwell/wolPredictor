@@ -7,13 +7,14 @@
 #AROUND 3X QUICKER ON MY 4 CORE 16GB RAM LAPTOP
 #AROUND 15X QUICKER ON HPC WITH 200GB RAM & 24 CORES
 
-import numpy as np
+import numpy as np, dendropy as dp
 from numpy import genfromtxt
-import csv, subprocess, sys, getopt, re, itertools
+import csv, sys, getopt, re, itertools
 import pandas as pd, collections as cl
 from timeit import default_timer as timer 
 import makePDF3 as mp
 import concurrent.futures
+import os
 
 ###### SET SOME PARAMETERS!!!!! ######
 cntrl = 0 # if == 1: doesn't allow same Wolbachia strains in different communities (is more conservative, but not actually as realistic, analysis)
@@ -31,7 +32,7 @@ wolbachia = 'wspClade' #column of empirical Wolbachia assigments in data file
 comm_column = 'sp.complex' #community column in data file
 NameOnPhylo = 'taxa' #phylogeny taxa names column
 tree = 'exaData_faoReview.tre' # tree file
-dat_dir, out_dir = '.', '.' #in/output directory
+dat_dir, out_dir = 'data', 'out' #in/output directory
 path2script = 'cophen4pyOut.R' #R script
 
 #read any new params entered by user
@@ -116,6 +117,10 @@ vf1 = np.vectorize(f1, excluded=['comm']) #, otypes=['O']
 def f2(x): return x.split('_')[0]
 vf2 = np.vectorize(f2)
 
+#mk out_dir
+try: os.mkdir(out_dir)
+except: pass
+
 #Main control loop
 def main():
     '''Main pgm control function'''
@@ -124,7 +129,7 @@ def main():
         return
 
     #check_ape, get phylo, make df
-    cophen, purge, pge_incr, z, _ = R_cophen('{}/{}'.format(dat_dir, tree), path2script) #get Dist Mat from phylogeny in R
+    cophen, purge, pge_incr, z, _ = dendro(f"{dat_dir}/{tree}")
     f = f"n{taxonDesignations.shape[1] - 1}_sppDelims" # output file prefix
     print(f'\nRunning "wolPredictor_MANUAL" - params: {prefix}_{f}')
 
@@ -193,7 +198,7 @@ def main():
     output3 = pd.DataFrame(assigned)
     output3.columns = cols
     output3.to_csv('{}/{}_correctedWolPreds_{}.csv'.format(out_dir, prefix, f), index = False)
-
+	
     if pdf == 1: #y/n write results figures
         tix = 0
         print("Analyses complete. Making figures....")
@@ -202,18 +207,25 @@ def main():
 
     print("Time:", str(timer() - start))
 
-def R_cophen(tree, path2script):
-    '''
-    Build cophenetic distance matrix from inputted tree and decide purging parameters according to max(cophen)
-    '''
-    check_ape = ['Rscript', f'{dat_dir}/check_ape.R'] #check 'ape' is installed in R...
-    subprocess.run(check_ape) #....and install if not present
+def dendro(file):
+    tree = dp.Tree.get(path=file, schema="nexus")
+    pdc = tree.phylogenetic_distance_matrix()
 
-    cmd = ['Rscript', f'{dat_dir}/{path2script}', f'{dat_dir}/{tree}'] #Build subprocess command
-    out = subprocess.run(cmd, universal_newlines = True, stdout = subprocess.PIPE)
-    lines = out.stdout.splitlines() #split stdout
-    
-    cophen = np.array([s.split(',') for s in  lines[1:]]).astype(float) #create array from stdout
+    s1, mat = [], []
+    for i, t1 in enumerate(tree.taxon_namespace):
+        s1.append(t1.label.replace(' ','_'))
+        tmp = []
+        for t2 in tree.taxon_namespace:
+            tmp.append(pdc(t1, t2))
+        mat.append(tmp)
+
+    df = pd.DataFrame(mat)
+    df.columns = s1
+    df.index = s1
+    df = df.sort_index(axis=1)
+    df = df.sort_index(axis=0)
+
+    cophen = np.array(df) #create array from stdout
     purge = int(np.max(cophen) * 100) + 1 #max tree pw distance
     if purge >= 10: pge_incr = int(purge / nPges) #calc no. of purge increments
     else: pge_incr = 2
